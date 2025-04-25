@@ -12,7 +12,7 @@
         public WaterTank Kitchen { get; set; }
         public WaterTank Bathroom { get; set; }
         public WaterTank Flush { get; set; }
-
+        public string NoticeBoard { get; set; }
 
     }
 }

@@ -8,6 +8,8 @@ namespace SocietyManagementShowcase.Models
         public string Name { get; set; }
         public int Contact { get; set; }
         public string Email { get; set; }
+        public string Wing { get; set; }
+        public string FlatNo { get; set; }
         public SocietyRoleType Role { get; set; }
 
     }
