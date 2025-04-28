@@ -17,7 +17,11 @@
     public enum SocietyRoleType
     {
         Member = 0,
+        Owner,
+        Tenant,
         SubManager,
-        Manager
+        Manager,
+        SecurityStaff,
+        HouseKeepingStaff
     }
 }

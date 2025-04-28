@@ -8,6 +8,9 @@ namespace SocietyManagementShowcase.Models
         public int Capacity { get; set; }
         public int WaterLevel { get; set; }
         public StatusHealth Health { get; set; }
+        public List<MaintenanceLog> WaterTankMaintenaceLog { get; set; }
+        public DateOnly LastMaintenanceCheck { get; set; }
+
     }
 
     public enum WaterTankType
