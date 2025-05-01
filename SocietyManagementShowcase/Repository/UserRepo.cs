@@ -3,7 +3,6 @@ using SocietyManagementShowcase.Common;
 using SocietyManagementShowcase.IRepository;
 using SocietyManagementShowcase.Models;
 
-
 namespace SocietyManagementShowcase.Repository
 {
     public class UserRepo : IUserRepo
@@ -12,7 +11,19 @@ namespace SocietyManagementShowcase.Repository
         {
             try
             {
-                UserLogin.
+                using EfCoreDbContext context = new EfCoreDbContext();
+
+                User? retrievedUser = context.Users.FromSqlInterpolated($@"
+                    EXEC spVerifyUser 
+                        @Username = {user.Username}, 
+                        @Password = {user.Password} 
+                ").AsNoTracking().AsEnumerable().FirstOrDefault();
+
+                if (retrievedUser != null)
+                {
+                    if (user.Username == retrievedUser.Username && user.Password == retrievedUser.Password) return true;
+                    else return false;
+                }
             }
             catch (Exception ex)
             {

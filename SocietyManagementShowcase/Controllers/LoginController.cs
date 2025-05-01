@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.IRepository;
 using SocietyManagementShowcase.Models;
 using SocietyManagementShowcase.Repository;
@@ -21,7 +23,7 @@ namespace SocietyManagementShowcase.Controllers
         [HttpGet]
         public User Get()
         {
-            return new User() { Id =1, Password="Test", PersonId=1, Username="Test"};
+            return new User() { Id = 1, Password = "Test", PersonId = 1, Username = "Test" };
         }
 
         // GET api/<ValuesController>/5
@@ -33,11 +35,29 @@ namespace SocietyManagementShowcase.Controllers
 
         // POST api/<ValuesController>
         [HttpPost]
-        public async Task<string[]> Post([FromBody] User value)
+        public async Task<IActionResult> Post([FromBody] User value)
         {
             bool result = await _userRepo.VerifyUser(value);
-            if (result) return new string[] { "status", "user verified"}.ToArray();
-            else return new string[] { "status", "user not verified or user not found" }.ToArray();
+            if (result)
+            {
+                var successResponse = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent("\"status\":\"user verified\"", Encoding.UTF8, "application/json"),
+                    ReasonPhrase = "user verified"
+                };
+                return new ObjectResult(successResponse);
+            }
+            else
+            {
+                {
+                    var errorResponse = new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        Content = new StringContent("\"status\":\"user not verified\"", Encoding.UTF8, "application/json"),
+                        ReasonPhrase = "user not verified"
+                    };
+                    return new ObjectResult(errorResponse);
+                }
+            }
         }
 
         // PUT api/<ValuesController>/5
