@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
+using Common;
 using SocietyManagementShowcase.Models;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -24,10 +25,15 @@ namespace SocietyManagementUI.Api
                 Application.Json);
 
             var httpResponseMessage = await _httpClient.PostAsync("/api/Login/", userJson);
-            httpResponseMessage.EnsureSuccessStatusCode();
-
+            var jsonResponse = httpResponseMessage.Content.ReadAsStringAsync();
+            LoginResponse response = JsonSerializer.Deserialize<LoginResponse>(jsonResponse.Result.ToString());
             
-            return string.Empty;
+            //var result = JsonSerializer.Deserialize<data>(jsonResponse);
+            httpResponseMessage.EnsureSuccessStatusCode();
+            
+             return response.status;
         }
     }
+
+    
 }

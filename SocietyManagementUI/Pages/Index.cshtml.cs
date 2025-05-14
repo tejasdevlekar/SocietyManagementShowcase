@@ -22,14 +22,27 @@ namespace SocietyManagementUI.Pages
         public void OnGet()
         {
             int test = 0;
+            ViewData["Message"] = "GetTest";
         }
 
-        public async void OnPost(User user)
+        public async Task<IActionResult> OnPost(User user)
         {
-            string test = user.Username;
-            string test2 = user.Password;
+            try
+            {
+                string test = user.Username;
+                string test2 = user.Password;
 
-            string testLogin = await _loginService.PostLoginAsync(user);
+                string testLogin = "Default value";
+                testLogin = await _loginService.PostLoginAsync(user);
+                ViewData["Message"] = testLogin;
+
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                ViewData["Message"] = ex.ToString();
+                return Page();
+            }
 
         }
     }

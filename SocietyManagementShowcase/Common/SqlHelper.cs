@@ -18,7 +18,7 @@ namespace SocietyManagementShowcase.Common
             }
 
             using EfCoreDbContext context = new EfCoreDbContext();
-            
+
         }
     }
 }

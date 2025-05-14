@@ -6,7 +6,6 @@ namespace SocietyManagementShowcase.Common
     public class EfCoreDbContext : DbContext
     {
         
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //Configuring the Connection String

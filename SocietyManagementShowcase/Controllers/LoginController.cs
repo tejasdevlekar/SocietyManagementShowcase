@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using System.Text;
+using System.Text.Json;
+using Common;
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.IRepository;
 using SocietyManagementShowcase.Models;
@@ -33,32 +35,73 @@ namespace SocietyManagementShowcase.Controllers
             return "value";
         }
 
+
         // POST api/<ValuesController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] User value)
-        {
-            bool result = await _userRepo.VerifyUser(value);
-            if (result)
+         {
+            try
             {
-                var successResponse = new HttpResponseMessage(HttpStatusCode.OK)
+                bool result = await _userRepo.VerifyUser(value);
+                if (result)
                 {
-                    Content = new StringContent("\"status\":\"user verified\"", Encoding.UTF8, "application/json"),
-                    ReasonPhrase = "user verified"
-                };
-                return new ObjectResult(successResponse);
-            }
-            else
-            {
-                {
-                    var errorResponse = new HttpResponseMessage(HttpStatusCode.NotFound)
+                    LoginResponse data = new LoginResponse()
                     {
-                        Content = new StringContent("\"status\":\"user not verified\"", Encoding.UTF8, "application/json"),
-                        ReasonPhrase = "user not verified"
+                        status = "User has been verified"
                     };
-                    return new ObjectResult(errorResponse);
+                    return new JsonResult(data);
+                }
+                else
+                {
+                    LoginResponse data = new LoginResponse()
+                    {
+                        status = "User not verified or no user found"
+                    };
+                    return new JsonResult(data);
                 }
             }
+            catch (Exception ex)
+            {
+                var data = new { 
+                    status = "Exception occurred", 
+                    message = ex.ToString()
+                };
+
+                var errorResponse = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json"),
+                    ReasonPhrase = "user not verified"
+                };
+                return new ObjectResult(errorResponse);
+            }
         }
+
+        //// POST api/<ValuesController>
+        //[HttpPost]
+        //public async Task<IActionResult> Post([FromBody] User value)
+        //{
+        //    bool result = await _userRepo.VerifyUser(value);
+        //    if (result)
+        //    {
+        //        var successResponse = new HttpResponseMessage(HttpStatusCode.OK)
+        //        {
+        //            Content = new StringContent("\"status\":\"user verified\"", Encoding.UTF8, "application/json"),
+        //            ReasonPhrase = "user verified"
+        //        };
+        //        return new ObjectResult(successResponse);
+        //    }
+        //    else
+        //    {
+        //        {
+        //            var errorResponse = new HttpResponseMessage(HttpStatusCode.NotFound)
+        //            {
+        //                Content = new StringContent("\"status\":\"user not verified\"", Encoding.UTF8, "application/json"),
+        //                ReasonPhrase = "user not verified"
+        //            };
+        //            return new ObjectResult(errorResponse);
+        //        }
+        //    }
+        //}
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]

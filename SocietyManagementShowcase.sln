@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocietyManagementShowcase",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocietyManagementUI", "SocietyManagementUI\SocietyManagementUI.csproj", "{17EA84ED-DE79-4DAD-929B-0261BD3EC935}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{161F9470-18BE-4737-810C-363091EBDEA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{17EA84ED-DE79-4DAD-929B-0261BD3EC935}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17EA84ED-DE79-4DAD-929B-0261BD3EC935}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17EA84ED-DE79-4DAD-929B-0261BD3EC935}.Release|Any CPU.Build.0 = Release|Any CPU
+		{161F9470-18BE-4737-810C-363091EBDEA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{161F9470-18BE-4737-810C-363091EBDEA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{161F9470-18BE-4737-810C-363091EBDEA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{161F9470-18BE-4737-810C-363091EBDEA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
