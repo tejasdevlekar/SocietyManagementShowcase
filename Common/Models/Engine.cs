@@ -4,6 +4,7 @@ namespace SocietyManagementShowcase.Models
 {
     public class Engine
     {
+        public int Id { get; set; }
         public int FuelLevel { get; set; }
         public int OilLevel { get; set; }
         public StatusHealth Health { get; set; }

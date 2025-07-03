@@ -31,6 +31,11 @@ public class HomeController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> Index(User user)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(user);
+        }
+
         bool isAuthenticated = await _loginService.PostLoginAsync(user);
         if (isAuthenticated)
         {

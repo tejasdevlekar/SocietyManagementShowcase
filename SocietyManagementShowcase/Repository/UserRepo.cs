@@ -52,5 +52,16 @@ namespace SocietyManagementShowcase.Repository
             }
             return false;
         }
+
+        public async Task<bool> AddUserAsync(User user)
+        {
+            using(EfCoreDbContext context = new EfCoreDbContext())
+            {
+                context.Users.Add(user);
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
     }
 }
