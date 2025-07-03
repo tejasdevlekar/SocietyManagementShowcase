@@ -17,7 +17,7 @@ namespace SocietyManagementUI.Api
 
         }
 
-        public async Task<string> PostLoginAsync(User user)
+        public async Task<bool> PostLoginAsync(User user)
         {
             var userJson = new StringContent(
                 JsonSerializer.Serialize(user),

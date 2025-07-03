@@ -47,7 +47,7 @@ namespace SocietyManagementShowcase.Controllers
                 {
                     LoginResponse data = new LoginResponse()
                     {
-                        status = "User has been verified"
+                        status = true
                     };
                     return new JsonResult(data);
                 }
@@ -55,7 +55,7 @@ namespace SocietyManagementShowcase.Controllers
                 {
                     LoginResponse data = new LoginResponse()
                     {
-                        status = "User not verified or no user found"
+                        status = false
                     };
                     return new JsonResult(data);
                 }

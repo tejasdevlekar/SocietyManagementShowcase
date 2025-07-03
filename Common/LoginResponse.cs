@@ -2,6 +2,6 @@
 {
     public class LoginResponse
     {
-        public string status { get; set; }
+        public bool status { get; set; }
     }
 }
