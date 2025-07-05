@@ -4,6 +4,7 @@ namespace SocietyManagementShowcase.Models
 {
     public class FireFightingSystem
     {
+        public int Id { get; set; }
         public WaterTank Fire { get; set; }
         public Engine FireSystemEngine { get; set; }
 

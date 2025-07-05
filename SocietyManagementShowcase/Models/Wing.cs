@@ -17,8 +17,5 @@
         public List<VisitorLog> LogOfVisitors { get; set; }
         public List<IssueTicketLog> IssueTicketWing { get; set; }
 
-        public int SocietyId { get; set; }
-        public Society Society { get; set; }
-
     }
 }

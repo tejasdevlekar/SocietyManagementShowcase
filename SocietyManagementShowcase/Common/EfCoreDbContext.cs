@@ -6,7 +6,7 @@ namespace SocietyManagementShowcase.Common
 {
     public class EfCoreDbContext : DbContext
     {
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //Configuring the Connection String
@@ -21,14 +21,13 @@ namespace SocietyManagementShowcase.Common
             //    .HasForeignKey(e => e.FlatId)
             //    .IsRequired();
 
-            
+
         }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Person> Person { get; set; }
         public DbSet<Flat> Flat { get; set; }
-
-       
+        public DbSet<Society> Society { get; set; }
 
     }
 }
