@@ -6,5 +6,9 @@ namespace SocietyManagementShowcase.IRepository
     {
         Task<bool> VerifyUser(User user);
         Task<bool> AddUserAsync(User user);
+        Task<List<User>> GetAllUsersAsync();
+        Task<User> FetchUserAsync(int id);
+        Task<bool> EditUserAsync(int id, User user);
+
     }
 }

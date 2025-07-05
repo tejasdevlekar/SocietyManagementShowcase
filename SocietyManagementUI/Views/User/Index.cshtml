@@ -10,6 +10,41 @@
 <table>
 	<tr>
 		<td>
+			<h5>User Id</h5>
+		</td>
+		<td>
+			<h5>Username</h5>
+		</td>
+		<td>
+			<h5>Password</h5>
+		</td>
+		<td>
+			<h5>Person Id</h5>
+		</td>
+	</tr>
+	@foreach(User user in Model)
+	{
+		<tr>
+			<td>@user.Id</td>
+			<td>
+				<h6>@user.Username</h6>
+			</td>
+			<td>
+				<h6>@user.Password</h6>
+			</td>
+			<td>
+				<h6>@user.PersonId</h6>
+			</td>
+			<td>
+				<a class="btn-floating waves-effect waves-light" href="@Url.Action("EditUser","User",new {id=user.Id})"><i class="material-icons left">edit</i>Edit</a>
+			</td>
+			<td>
+				<a class="btn-floating waves-effect waves-light red darken-1" href="@Url.Action("DeleteUser","User",new {id=user.Id})"><i class="material-icons left">delete</i>Delete</a>
+			</td>
+		</tr>
+	}
+	<tr>
+		<td>
 			<a href="/User/AddUser" class="waves-effect waves-light btn-large">Add User<i class="material-icons right">add</i></a>
 		</td>
 	</tr>

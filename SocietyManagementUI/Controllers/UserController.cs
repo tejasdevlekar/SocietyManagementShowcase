@@ -9,18 +9,21 @@ namespace SocietyManagementUI.Controllers
     [LoginAuthenticationFilter]
     public class UserController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<UserController> _logger;
         private readonly UserService _userService;
 
 
-        public UserController(ILogger<HomeController> logger, UserService userService)
+        public UserController(ILogger<UserController> logger, UserService userService)
         {
             _logger = logger;
             _userService = userService;
         }
-        public IActionResult Index()
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<User> users = await _userService.GetAllUserAsync();
+            return View(users);
         }
 
         [HttpGet]
@@ -46,6 +49,41 @@ namespace SocietyManagementUI.Controllers
             {
                 return RedirectToAction("Error", "Home");
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(int id)
+        {
+            try
+            {
+                User retrievedUser = await _userService.FetchUserAsync(id);
+                return View(retrievedUser);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(User user)
+        {
+            try
+            {
+                _logger.LogInformation("Editing user");
+                bool isSuccess = await _userService.EditUserAsync(user.Id,user);
+                _logger.LogInformation("User edited successfully");
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+            }
+
+            return View();
         }
     }
 }
