@@ -151,8 +151,40 @@ namespace SocietyManagementShowcase.Controllers
 
         // DELETE api/<AddUserController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            try
+            {
+                bool isDeleted = await _userRepo.DeleteUserAsync(id);
+                if (isDeleted)
+                {
+                    var successResponse = new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent("User has been deleted", Encoding.UTF8, "application/json"),
+                        ReasonPhrase = "user not added"
+                    };
+                    return new ObjectResult(successResponse);
+                }
+                else
+                {
+                    var errorResponse = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                    {
+                        Content = new StringContent("User not deleted",Encoding.UTF8, "application/json"),
+                        ReasonPhrase = "User not deleted"
+                    };
+                    return new ObjectResult(errorResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                var errorResponse = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("User not deleted", Encoding.UTF8, "application/json"),
+                    ReasonPhrase = "User not deleted"
+                };
+                return new ObjectResult(errorResponse);
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ namespace SocietyManagementShowcase.IRepository
         Task<List<User>> GetAllUsersAsync();
         Task<User> FetchUserAsync(int id);
         Task<bool> EditUserAsync(int id, User user);
+        Task<bool> DeleteUserAsync(int id);
 
     }
 }

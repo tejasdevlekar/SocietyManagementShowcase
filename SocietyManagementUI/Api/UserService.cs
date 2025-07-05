@@ -9,12 +9,14 @@ namespace SocietyManagementUI.Api
     public class UserService
     {
         private readonly HttpClient _httpClient;
+        private readonly ILogger<UserService> _logger;
 
-        public UserService(HttpClient httpClient)
+
+        public UserService(HttpClient httpClient, ILogger<UserService> logger)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7249/");
-
+            _logger = logger;
         }
 
         public async Task<List<User>> GetAllUserAsync()
@@ -69,6 +71,23 @@ namespace SocietyManagementUI.Api
 
             return response.isSuccess;
 
+        }
+
+        public async Task<bool> DeleteUserAsync(int id)
+        {
+            try
+            {
+                var httpResponseMessage = await _httpClient.DeleteAsync($"/api/AddUser/{id}");
+                var jsonResponse = httpResponseMessage.Content.ReadAsStringAsync();
+                httpResponseMessage.EnsureSuccessStatusCode();
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                return false;
+            }
         }
 
 

@@ -8,10 +8,13 @@ namespace SocietyManagementShowcase.Repository
     public class UserRepo : IUserRepo
     {
         private readonly EfCoreDbContext _efCoreDbContext;
+        private readonly ILogger<UserRepo> _logger;
 
-        public UserRepo(EfCoreDbContext efCoreDbContext)
+
+        public UserRepo(EfCoreDbContext efCoreDbContext, ILogger<UserRepo> logger)
         {
             _efCoreDbContext = efCoreDbContext;
+            _logger = logger;
         }
         //public async Task<bool> VerifyUser(User user)
         //{
@@ -61,7 +64,7 @@ namespace SocietyManagementShowcase.Repository
 
         public async Task<bool> AddUserAsync(User user)
         {
-            using(_efCoreDbContext)
+            using (_efCoreDbContext)
             {
                 _efCoreDbContext.Users.Add(user);
                 _efCoreDbContext.SaveChanges();
@@ -98,7 +101,7 @@ namespace SocietyManagementShowcase.Repository
             }
             return null;
         }
-        public async Task<bool> EditUserAsync(int id,  User user)
+        public async Task<bool> EditUserAsync(int id, User user)
         {
             try
             {
@@ -119,6 +122,28 @@ namespace SocietyManagementShowcase.Repository
                 throw ex;
             }
             return false;
+        }
+
+        public async Task<bool> DeleteUserAsync(int id)
+        {
+            try
+            {
+                using (_efCoreDbContext)
+                {
+                    User retrievedUser = await _efCoreDbContext.Users.FindAsync(id);
+                    _logger.LogInformation($"Deleting user{retrievedUser.Username}");
+
+                    _efCoreDbContext.Users.Remove(retrievedUser);
+                    await _efCoreDbContext.SaveChangesAsync();
+                    _logger.LogInformation($"Deleted user successfully: {retrievedUser.Username}");
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return false;
+            }
         }
     }
 }

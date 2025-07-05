@@ -85,5 +85,22 @@ namespace SocietyManagementUI.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            try
+            {
+                _logger.LogInformation("Deleting user");
+                bool isSuccess = await _userService.DeleteUserAsync(id);
+                _logger.LogInformation("User deleted successfully");
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Index");
+            }
+        }
     }
 }

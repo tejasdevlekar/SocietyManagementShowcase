@@ -41,7 +41,7 @@ public class HomeController : Controller
         {
             HttpContext.Session.SetInt32(Login.USERID, user.Id);
             HttpContext.Session.SetString(Login.USERNAME, user.Username);
-            return RedirectToAction("Privacy", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
         else
         {
@@ -60,6 +60,12 @@ public class HomeController : Controller
     }
     [LoginAuthenticationFilter]
     public IActionResult Privacy()
+    {
+        return View();
+    }
+
+    [LoginAuthenticationFilter]
+    public IActionResult Dashboard()
     {
         return View();
     }
