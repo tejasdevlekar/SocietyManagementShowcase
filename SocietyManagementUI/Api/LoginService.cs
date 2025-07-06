@@ -9,12 +9,13 @@ namespace SocietyManagementUI.Api
     public class LoginService
     {
         private readonly HttpClient _httpClient;
+        private readonly ILogger<LoginService> _logger;
 
-        public LoginService(HttpClient httpClient)
+        public LoginService(HttpClient httpClient, ILogger<LoginService> logger)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7249/");
-
+            _logger = logger;
         }
 
         public async Task<LoginResponse> PostLoginAsync(User user)

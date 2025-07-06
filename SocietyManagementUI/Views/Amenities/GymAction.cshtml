@@ -1,0 +1,47 @@
+﻿@model SocietyManagementShowcase.Models.Gym;
+
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		console.log("The Gym is ready!");
+		M.AutoInit();
+		$('select').formSelect();
+	});
+</script>
+
+<nav>
+	<div class="nav-wrapper red accent-3 z-depth-2">
+		<a href="#" class="center brand-logo">Gym</a>
+	</div>
+</nav>
+
+<br />
+<br />
+<div align="left" style="width: 36%">
+	<table>
+		<tr>
+			<td>Health Status: </td>
+			<td>
+				<input asp-for="Health" placeholder="Health Status" class="validate" disabled />
+			</td>
+		</tr>
+		<tr>
+			<td>Last Maintenance Check: </td>
+			<td>
+				<input asp-for="LastMaintenanceCheck" placeholder="Last Maintenance Check" class="validate" disabled />
+			</td>
+		</tr>
+	</table>
+</div>
+
+
+
+<div class="input-field col s12">
+	<select>
+		<option value="" disabled selected>Choose Health Status</option>
+		<option value="0">OK</option>
+		<option value="1">Maintenance</option>
+		<option value="2">Issue</option>
+		<option value="3">Critical</option>
+	</select>
+	<label>Health Status</label>
+</div>

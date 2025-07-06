@@ -5,6 +5,8 @@ select * from [dbo].[VisitorLog]
 select * from [dbo].[Society]
 
 
+asdla
+
 select * 
 into #tempUsers
 from [dbo].[Users]
