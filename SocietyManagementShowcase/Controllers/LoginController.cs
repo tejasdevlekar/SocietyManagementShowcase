@@ -42,14 +42,15 @@ namespace SocietyManagementShowcase.Controllers
          {
             try
             {
-                bool result = await _userRepo.VerifyUser(value);
-                if (result)
+                User retrivedUser = await _userRepo.VerifyUser(value);
+                if (retrivedUser != null)
                 {
                     LoginResponse data = new LoginResponse()
                     {
-                        status = true
+                        status = true,
+                        User = retrivedUser
                     };
-                    return new JsonResult(data);
+                    return new ObjectResult(JsonSerializer.Serialize(data));
                 }
                 else
                 {

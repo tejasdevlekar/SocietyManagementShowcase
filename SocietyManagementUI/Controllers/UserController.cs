@@ -86,6 +86,7 @@ namespace SocietyManagementUI.Controllers
             return View();
         }
 
+        [SuperAdminAuthrorizationFilter]
         [HttpPost]
         public async Task<IActionResult> DeleteUser(int id)
         {

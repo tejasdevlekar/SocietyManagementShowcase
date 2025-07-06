@@ -1,4 +1,5 @@
 ﻿@using SocietyManagementShowcase.Models;
+@using SocietyManagementUI.Common
 @model List<User>;
 
 <nav>
@@ -39,15 +40,17 @@
 				<a class="btn-floating waves-effect waves-light" href="@Url.Action("EditUser","User",new {id=user.Id})"><i class="material-icons left">edit</i>Edit</a>
 			</td>
 			<td>
+				@if (Context.Session.GetInt32(Login.USERROLETYPE) == (int)UserRoleType.SuperAdmin)
+				{
+					<form asp-action="DeleteUser" asp-controller="User" method="post">
+						<input name="id" type="hidden" value="@user.Id" />
 
-				<form asp-action="DeleteUser" asp-controller="User" method="post">
-					<input name="id" type="hidden" value="@user.Id" />
 
-
-					<button class="btn-floating waves-effect waves-light red darken-1" type="submit" name="action">
-						<i class="material-icons right">delete</i>
-					</button>
-				</form>
+						<button class="btn-floating waves-effect waves-light red darken-1" type="submit" name="action">
+							<i class="material-icons right">delete</i>
+						</button>
+					</form>
+				}
 			</td>
 		</tr>
 	}

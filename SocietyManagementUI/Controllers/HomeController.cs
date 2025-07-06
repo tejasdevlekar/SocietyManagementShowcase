@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.Models;
@@ -36,11 +37,12 @@ public class HomeController : Controller
             return View(user);
         }
 
-        bool isAuthenticated = await _loginService.PostLoginAsync(user);
-        if (isAuthenticated)
+        LoginResponse response = await _loginService.PostLoginAsync(user);
+        if (response.status)
         {
-            HttpContext.Session.SetInt32(Login.USERID, user.Id);
-            HttpContext.Session.SetString(Login.USERNAME, user.Username);
+            HttpContext.Session.SetInt32(Login.USERID, response.User.Id);
+            HttpContext.Session.SetString(Login.USERNAME, response.User.Username);
+            HttpContext.Session.SetInt32(Login.USERROLETYPE, (int)response.User.RoleType);
             return RedirectToAction("Dashboard", "Home");
         }
         else
