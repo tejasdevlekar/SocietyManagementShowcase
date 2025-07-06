@@ -41,7 +41,7 @@ namespace SocietyManagementShowcase.Repository
         //    return false;
         //}
 
-        public async Task<bool> VerifyUser(User user)
+        public async Task<User> VerifyUser(User user)
         {
             try
             {
@@ -50,8 +50,8 @@ namespace SocietyManagementShowcase.Repository
                     User retrievedUser = _efCoreDbContext.Users.Where(x => x.Username == user.Username).FirstOrDefault();
                     if (retrievedUser != null)
                     {
-                        if (user.Username == retrievedUser.Username && user.Password == retrievedUser.Password) return true;
-                        else return false;
+                        if (user.Username == retrievedUser.Username && user.Password == retrievedUser.Password) return retrievedUser;
+                        else return null;
                     }
                 }
             }
@@ -59,7 +59,7 @@ namespace SocietyManagementShowcase.Repository
             {
                 Console.WriteLine(ex.ToString());
             }
-            return false;
+            return null;
         }
 
         public async Task<bool> AddUserAsync(User user)
@@ -79,7 +79,7 @@ namespace SocietyManagementShowcase.Repository
 
             using (_efCoreDbContext)
             {
-                users = await _efCoreDbContext.Users.ToListAsync();
+                users = await _efCoreDbContext.Users.Where(x => !x.isDeleted).ToListAsync();
             }
             return users;
         }
@@ -132,8 +132,8 @@ namespace SocietyManagementShowcase.Repository
                 {
                     User retrievedUser = await _efCoreDbContext.Users.FindAsync(id);
                     _logger.LogInformation($"Deleting user{retrievedUser.Username}");
+                    retrievedUser.isDeleted = true;
 
-                    _efCoreDbContext.Users.Remove(retrievedUser);
                     await _efCoreDbContext.SaveChangesAsync();
                     _logger.LogInformation($"Deleted user successfully: {retrievedUser.Username}");
                     return true;

@@ -4,7 +4,7 @@ namespace SocietyManagementShowcase.IRepository
 {
     public interface IUserRepo
     {
-        Task<bool> VerifyUser(User user);
+        Task<User> VerifyUser(User user);
         Task<bool> AddUserAsync(User user);
         Task<List<User>> GetAllUsersAsync();
         Task<User> FetchUserAsync(int id);

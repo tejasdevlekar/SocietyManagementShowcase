@@ -17,7 +17,7 @@ namespace SocietyManagementUI.Api
 
         }
 
-        public async Task<bool> PostLoginAsync(User user)
+        public async Task<LoginResponse> PostLoginAsync(User user)
         {
             var userJson = new StringContent(
                 JsonSerializer.Serialize(user),
@@ -31,7 +31,7 @@ namespace SocietyManagementUI.Api
             //var result = JsonSerializer.Deserialize<data>(jsonResponse);
             httpResponseMessage.EnsureSuccessStatusCode();
             
-             return response.status;
+             return response;
         }
     }
 
