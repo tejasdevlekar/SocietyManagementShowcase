@@ -1,4 +1,5 @@
-﻿using SocietyManagementShowcase.Common;
+﻿using Common;
+using SocietyManagementShowcase.Common;
 using SocietyManagementShowcase.IRepository;
 using SocietyManagementShowcase.Models;
 
@@ -15,14 +16,34 @@ namespace SocietyManagementShowcase.Repository
             _logger = logger;
         }
 
-        public async Task<Gym> GetGymInfoAsync(int id)
+        public async Task<Gym> GetAmenityInfoAsync(AmenityType type)
         {
             try
             {
-                using (_efCoreDbContext)
+                switch (type)
                 {
-                    Gym gym = await _efCoreDbContext.Gym.FindAsync(id);
-                    return gym;
+                    case AmenityType.Gym:
+                        using (_efCoreDbContext)
+                        {
+                            Gym gym = await _efCoreDbContext.Gym.FindAsync(1);
+                            return gym;
+                        }
+                        break;
+                    case AmenityType.SwimmingPoolOutdoor:
+                        return null; //temp change later
+                        break;
+                    case AmenityType.SwimmingPoolIndoor:
+                        return null; //temp change later
+                        break;
+                    case AmenityType.CommonAmenitiesMen:
+                        return null; //temp change later
+                        break;
+                    case AmenityType.CommonAmenitiesWomen:
+                        return null; //temp change later
+                        break;
+                    default:
+                        return null;
+                        break;
                 }
             }
             catch (Exception ex)

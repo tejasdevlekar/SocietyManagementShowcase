@@ -1,9 +1,10 @@
-﻿using SocietyManagementShowcase.Models;
+﻿using Common;
+using SocietyManagementShowcase.Models;
 
 namespace SocietyManagementShowcase.IRepository
 {
     public interface IAmenitiesRepo
     {
-        Task<Gym> GetGymInfoAsync(int id);
+        Task<Gym> GetAmenityInfoAsync(AmenityType type);
     }
 }

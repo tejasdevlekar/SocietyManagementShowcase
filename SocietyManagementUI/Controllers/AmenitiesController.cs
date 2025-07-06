@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.Models;
 using SocietyManagementUI.Api;
+using Common;
 
 namespace SocietyManagementUI.Controllers
 {
@@ -19,7 +20,7 @@ namespace SocietyManagementUI.Controllers
         {
             try
             {
-                Gym gym = await _amenitiesService.GetGymAsync(1); //Hardcoding gym id 'cause there's only 1 gym.
+                Gym gym = await _amenitiesService.GetAmenityAsync(AmenityType.Gym);
                 return View(gym);
             }
             catch (Exception ex)

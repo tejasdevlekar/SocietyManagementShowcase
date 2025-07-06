@@ -34,16 +34,17 @@ namespace SocietyManagementShowcase.Controllers
 
         // GET api/<AmenitiesController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(AmenityType type)
         {
             try
-            {   
-                Gym gym = await _amenitiesRepo.GetGymInfoAsync(id);
-                
+            {
+                AmenitiesResponse response = new AmenitiesResponse();
+                Gym gym = await _amenitiesRepo.GetAmenityInfoAsync(type);
                 if(gym != null)
                 {
-                    
-                    return new ObjectResult(JsonSerializer.Serialize(gym));
+                    response.Type = AmenityType.Gym;
+                    response.Amenity = gym;
+                    return new ObjectResult(JsonSerializer.Serialize(response));
                 }
                 else
                 {

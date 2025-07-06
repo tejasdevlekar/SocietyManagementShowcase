@@ -14,8 +14,10 @@ namespace Common
 
     public enum AmenityType
     {
-        Gym=0,
-        SwimmingPool,
-        CommonAmenities
+        Gym = 0,
+        SwimmingPoolOutdoor,
+        SwimmingPoolIndoor,
+        CommonAmenitiesMen,
+        CommonAmenitiesWomen
     }
 }

@@ -16,15 +16,16 @@ namespace SocietyManagementUI.Api
             _logger = logger;
         }
 
-        public async Task<Gym> GetGymAsync(int id)
+        public async Task<Gym> GetAmenityAsync(AmenityType type)
         {
 
             try
             {
-                var httpResponseMessage = await _httpClient.GetAsync($"/api/Amenities/{1}");
+                var httpResponseMessage = await _httpClient.GetAsync($"/api/Amenities/{type}");
                 var jsonResponse = httpResponseMessage.Content.ReadAsStringAsync();
-                Gym gym = JsonSerializer.Deserialize<Gym>(jsonResponse.Result.ToString());
-
+                AmenitiesResponse response = JsonSerializer.Deserialize<AmenitiesResponse>(jsonResponse.Result.ToString());
+                
+                Gym gym = JsonSerializer.Deserialize<Gym>(response.Amenity.ToString());
                 return gym;
             }
             catch (Exception ex)
