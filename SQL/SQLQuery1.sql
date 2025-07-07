@@ -2,10 +2,17 @@ use [SocietyManagement]
 
 select * from [dbo].[VisitorLog]
 
-select * from [dbo].[Society]
+select * from [dbo].[Gym]
+select * from[dbo].[SwimmingPool]
+select * from [dbo].[CommonAmenities]
 
+select * from [dbo].[MaintenanceLog]
 
-asdla
+[dbo].[Society]
+
+Id, Name, NoOfWings, FireSystemId, WaterFilterId, IndoorGymId, Health, TotalFlatAreaSociety, TotalMaintenanceChargeSociety
+
+select * from [dbo].[Flat]
 
 select * 
 into #tempUsers
@@ -14,7 +21,6 @@ from [dbo].[Users]
 select * 
 into [dbo].[Users]
 from #tempUsers
-
 select * from #tempUsers
 
 select * from [dbo].[Users]

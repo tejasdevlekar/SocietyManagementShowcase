@@ -1,0 +1,54 @@
+﻿@using SocietyManagementShowcase.Models;
+@model List<MaintenanceLog>;
+
+<nav>
+	<div class="nav-wrapper red accent-3 z-depth-2">
+		<a href="#" class="center brand-logo">Gym Maintenance Log</a>
+	</div>
+</nav>
+
+<table>
+<tr>
+	<td>
+		Id
+	</td>
+		<td>
+			Maintenace Done By
+		</td>
+		<td>
+			Maintenace Checked By
+		</td>
+		<td>
+			Date And Time
+		</td>
+		<td>
+			Reason
+		</td>
+		<td>
+			Remarks
+		</td>
+</tr>
+@foreach(MaintenanceLog log in Model)
+{
+	<tr>
+		<td>
+			@log.Id
+		</td>
+			<td>
+				@log.MaintenaceDoneByName
+			</td>
+			<td>
+				@log.MaintenaceCheckedByName
+			</td>
+			<td>
+				@log.DateAndTime
+			</td>
+			<td>
+				@log.Reason
+			</td>
+			<td>
+				@log.Remarks
+			</td>
+	</tr>
+}
+</table>

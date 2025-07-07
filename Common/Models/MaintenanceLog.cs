@@ -9,4 +9,11 @@
         public string Reason { get; set; }
         public string Remarks { get; set; }
     }
+
+    public enum MaintenanceLogType
+    {
+        Gym = 0,
+        SwimmingPool,
+        CommonAmenities
+    }
 }
