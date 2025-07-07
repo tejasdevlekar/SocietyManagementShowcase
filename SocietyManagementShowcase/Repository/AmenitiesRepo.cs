@@ -1,4 +1,5 @@
 ﻿using Common;
+using Microsoft.EntityFrameworkCore;
 using SocietyManagementShowcase.Common;
 using SocietyManagementShowcase.IRepository;
 using SocietyManagementShowcase.Models;
@@ -25,7 +26,19 @@ namespace SocietyManagementShowcase.Repository
                     case AmenityType.Gym:
                         using (_efCoreDbContext)
                         {
-                            Gym gym = await _efCoreDbContext.Gym.FindAsync(1);
+                            int latestId = _efCoreDbContext.Gym
+                                .Include(x => x.GymMaintenaceLog)
+                                .AsNoTracking()
+                                .FirstOrDefault().GymMaintenaceLog.LastOrDefault().Id;
+
+
+                            Gym gym = await _efCoreDbContext.Gym
+                                    .Include(x => x.GymMaintenaceLog
+                                    .Where(y => y.Id == latestId))
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync();
+                            gym.LastMaintenanceCheck = gym.GymMaintenaceLog.LastOrDefault().DateAndTime;
+
                             return gym;
                         }
                         break;

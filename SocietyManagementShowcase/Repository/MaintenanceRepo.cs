@@ -27,7 +27,7 @@ namespace SocietyManagementShowcase.Repository
                     {
                         case MaintenanceLogType.Gym:
                             Gym gym = await _efCoreDbContext.Gym
-                                .Include(x => x.GymMaintenaceLog)
+                                .Include(x => x.GymMaintenaceLog.OrderByDescending(y => y.DateAndTime))
                                 .AsNoTracking()
                                 .FirstOrDefaultAsync(); //Since there's only 1 Gym
                             return gym.GymMaintenaceLog;
