@@ -16,11 +16,11 @@ namespace SocietyManagementUI.Api
             _logger = logger;
         }
 
-        public async Task<List<MaintenanceLog>> GetMaintenanceLogsAsync(MaintenanceLogType type)
+        public async Task<List<MaintenanceLog>> GetMaintenanceLogsAsync(MaintenanceLogType type, int lastId)
         {
             try
             {
-                var httpResponseMessage = await _httpClient.GetAsync($"/api/MaintenanceLog/{type}");
+                var httpResponseMessage = await _httpClient.GetAsync($"/api/MaintenanceLog/{type}?lastId={lastId}");
                 var jsonResponse = httpResponseMessage.Content.ReadAsStringAsync();
                 List<MaintenanceLog> maintenanceLogs = 
                     JsonSerializer.Deserialize<List<MaintenanceLog>>(jsonResponse.Result.ToString());

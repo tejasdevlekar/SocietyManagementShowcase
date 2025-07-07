@@ -5,6 +5,6 @@ namespace SocietyManagementShowcase.IRepository
 {
     public interface IMaintenanceRepo
     {
-        Task<List<MaintenanceLog>> GetMaintenanceLogAsync(MaintenanceLogType type);
+        Task<List<MaintenanceLog>> GetMaintenanceLogAsync(MaintenanceLogType type, int lastId);
     }
 }

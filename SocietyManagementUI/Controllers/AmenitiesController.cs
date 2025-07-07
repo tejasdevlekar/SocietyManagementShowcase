@@ -22,6 +22,7 @@ namespace SocietyManagementUI.Controllers
             _maintenanceLogService = maintenanceLogService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> GymAction()
         {
             try
@@ -36,12 +37,15 @@ namespace SocietyManagementUI.Controllers
             }
         }
 
-        public async Task<IActionResult> GymMaintenanceLog()
+        [HttpGet]
+        public async Task<IActionResult> GymMaintenanceLog(int id)
         {
             try
             {
+                //lastId = lastId != null ? lastId : 0;
+                int lastId = id;
                 List<MaintenanceLog> maintenanceLogs = await _maintenanceLogService
-                    .GetMaintenanceLogsAsync(MaintenanceLogType.Gym);
+                    .GetMaintenanceLogsAsync(MaintenanceLogType.Gym, lastId);
                 return View(maintenanceLogs);
             }
             catch (Exception ex)
@@ -50,5 +54,7 @@ namespace SocietyManagementUI.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+
+
     }
 }

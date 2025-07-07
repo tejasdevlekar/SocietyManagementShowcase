@@ -32,12 +32,12 @@ namespace SocietyManagementShowcase.Controllers
 
         // GET api/<MaintenanceLogController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMaintenanceLog(MaintenanceLogType type)
+        public async Task<IActionResult> GetMaintenanceLog(MaintenanceLogType type, int lastId)
         {
             try
             {
                 List<MaintenanceLog> maintenanceLogs = new List<MaintenanceLog>();
-                maintenanceLogs = await _maintenanceRepo.GetMaintenanceLogAsync(type);
+                maintenanceLogs = await _maintenanceRepo.GetMaintenanceLogAsync(type, lastId);
                 if (maintenanceLogs.Count > 0)
                 {
                     return new OkObjectResult(JsonSerializer.Serialize(maintenanceLogs));

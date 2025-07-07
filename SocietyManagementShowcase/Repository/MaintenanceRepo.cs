@@ -17,7 +17,7 @@ namespace SocietyManagementShowcase.Repository
             _logger = logger;
         }
 
-        public async Task<List<MaintenanceLog>> GetMaintenanceLogAsync(MaintenanceLogType type)
+        public async Task<List<MaintenanceLog>> GetMaintenanceLogAsync(MaintenanceLogType type, int lastId)
         {
             try
             {
@@ -26,8 +26,19 @@ namespace SocietyManagementShowcase.Repository
                     switch (type)
                     {
                         case MaintenanceLogType.Gym:
+                            if(lastId == 0)
+                            {
+                                lastId = _efCoreDbContext.MaintenanceLog
+                                        .OrderByDescending(x => x.Id)
+                                        .FirstOrDefault()
+                                        .Id;
+                            }
                             Gym gym = await _efCoreDbContext.Gym
-                                .Include(x => x.GymMaintenaceLog.OrderByDescending(y => y.DateAndTime))
+                                .Include(
+                                    x => x.GymMaintenaceLog.OrderByDescending(y => y.Id)
+                                    .Where(p => p.Id <= lastId)
+                                    .Take(5)
+                                )
                                 .AsNoTracking()
                                 .FirstOrDefaultAsync(); //Since there's only 1 Gym
                             return gym.GymMaintenaceLog;
