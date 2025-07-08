@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System.Text.Json;
+using Common;
 using Microsoft.EntityFrameworkCore;
 using SocietyManagementShowcase.Common;
 using SocietyManagementShowcase.IRepository;
@@ -65,5 +66,54 @@ namespace SocietyManagementShowcase.Repository
                 return null;
             }
         }
+
+
+        public async Task<bool> UpdateAmenityInfoAsync(AmenityType type, AmenitiesResponse  response)
+        {
+            try
+            {
+                switch (type)
+                {
+                    case AmenityType.Gym:
+                        using (_efCoreDbContext)
+                        {
+                            Gym retrievedGym = await _efCoreDbContext.Gym.FirstOrDefaultAsync();
+                            Gym postedGym = JsonSerializer.Deserialize<Gym>(response.Amenity.ToString());
+                            if (retrievedGym != null)
+                            {
+                                retrievedGym.Health = postedGym.Health;
+                                await _efCoreDbContext.SaveChangesAsync();
+                                return true;
+                            }
+                            else return false;
+                        }
+                        break;
+                    case AmenityType.SwimmingPoolOutdoor:
+                        return false;
+                        break;
+                    case AmenityType.SwimmingPoolIndoor:
+                        return false;
+                        break;
+                    case AmenityType.CommonAmenitiesMen:
+                        return false;
+                        break;
+                    case AmenityType.CommonAmenitiesWomen:
+                        return false;
+                        break;
+                    default:
+                        return false;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return false;
+            }
+        }
+
+
+
+
     }
 }

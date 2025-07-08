@@ -38,6 +38,44 @@ namespace SocietyManagementUI.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GymActionEdit()
+        {
+            try
+            {
+                Gym gym = await _amenitiesService.GetAmenityAsync(AmenityType.Gym);
+                return View(gym);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GymActionEdit(Gym gym)
+        {
+            try
+            {
+                AmenitiesResponse response = new AmenitiesResponse() { 
+                    Type = AmenityType.Gym,
+                    Amenity = gym
+                };
+                bool isSuccess = await _amenitiesService.PutAmenityAsync(response);
+
+                if (isSuccess)
+                    return RedirectToAction("GymAction");
+                else
+                    return RedirectToAction("Error", "Home");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GymMaintenanceLog(int id)
         {
             try

@@ -23,6 +23,9 @@
 			<td>
 				<input asp-for="Health" placeholder="Health Status" class="validate" disabled />
 			</td>
+			<td>
+				<a id="EditGymStatus" href="@Url.Action("GymActionEdit","Amenities")" class="btn-floating waves-effect waves-light"><i class="material-icons left">edit</i>Edit</a>
+			</td>
 		</tr>
 		<tr>
 			<td>Last Maintenance Check: </td>
@@ -34,16 +37,3 @@
 </div>
 
 <a href="/Amenities/GymMaintenanceLog" class="waves-effect waves-light btn">Maintenance Log</a>
-
-
-
-<div class="input-field col s12">
-	<select>
-		<option value="" disabled selected>Choose Health Status</option>
-		<option value="0">OK</option>
-		<option value="1">Maintenance</option>
-		<option value="2">Issue</option>
-		<option value="3">Critical</option>
-	</select>
-	<label>Health Status</label>
-</div>

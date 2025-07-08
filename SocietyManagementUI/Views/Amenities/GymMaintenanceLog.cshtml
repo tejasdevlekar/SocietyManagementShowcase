@@ -8,10 +8,10 @@
 </nav>
 
 <table>
-<tr>
-	<td>
-		Id
-	</td>
+	<tr>
+		<td>
+			Id
+		</td>
 		<td>
 			Maintenace Done By
 		</td>
@@ -27,13 +27,13 @@
 		<td>
 			Remarks
 		</td>
-</tr>
-@foreach(MaintenanceLog log in Model)
-{
-	<tr>
-		<td>
-			@log.Id
-		</td>
+	</tr>
+	@foreach (MaintenanceLog log in Model)
+	{
+		<tr>
+			<td>
+				@log.Id
+			</td>
 			<td>
 				@log.MaintenaceDoneByName
 			</td>
@@ -49,15 +49,15 @@
 			<td>
 				@log.Remarks
 			</td>
-	</tr>
-}
+		</tr>
+	}
 	<tr>
 		<td colspan="6">
 			<div align="center">
-				<a href="/Amenities/GymMaintenanceLog/@(Model.FirstOrDefault().Id + 4)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_left</i></a>
-				<a href="/Amenities/GymMaintenanceLog/@Model.LastOrDefault().Id" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_right</i></a>
-		</div>
-	</td>
-</tr>
+				<a href="/Amenities/GymMaintenanceLog/@(Model.FirstOrDefault().Id + 5)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_left</i></a>
+				<a href="/Amenities/GymMaintenanceLog/@(Model.LastOrDefault().Id - 1)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_right</i></a>
+			</div>
+		</td>
+	</tr>
 </table>
 

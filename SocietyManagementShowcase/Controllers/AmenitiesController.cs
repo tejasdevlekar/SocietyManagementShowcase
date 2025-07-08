@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Common;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.IRepository;
 using SocietyManagementShowcase.Models;
@@ -29,7 +30,7 @@ namespace SocietyManagementShowcase.Controllers
         //[HttpGet]
         //public async Task<IEnumerable<IActionResult>> Get()
         //{
-            
+
         //}
 
         // GET api/<AmenitiesController>/5
@@ -40,7 +41,7 @@ namespace SocietyManagementShowcase.Controllers
             {
                 AmenitiesResponse response = new AmenitiesResponse();
                 Gym gym = await _amenitiesRepo.GetAmenityInfoAsync(type);
-                if(gym != null)
+                if (gym != null)
                 {
                     response.Type = AmenityType.Gym;
                     response.Amenity = gym;
@@ -83,11 +84,64 @@ namespace SocietyManagementShowcase.Controllers
         //{
         //}
 
-        //// PUT api/<AmenitiesController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+        // PUT api/<AmenitiesController>/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromBody] AmenitiesResponse value)
+        {
+            try
+            {
+                
+                if (value == null) {
+                    var someResponse = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                    {
+                        ReasonPhrase = "Amenity not found"
+                    };
+
+                    return new BadRequestObjectResult(someResponse);
+                }
+                
+
+                switch (value.Type)
+                {
+                    case AmenityType.Gym:
+                        bool isSuccess = await _amenitiesRepo.UpdateAmenityInfoAsync(AmenityType.Gym, value);
+                        //if result return success HttpResponse
+                        if (isSuccess)
+                            return Ok();
+                        else
+                            return BadRequest();
+                            break;
+                    case AmenityType.SwimmingPoolOutdoor:
+                        break;
+                    case AmenityType.SwimmingPoolIndoor:
+                        break;
+                    case AmenityType.CommonAmenitiesMen:
+                        break;
+                    case AmenityType.CommonAmenitiesWomen:
+                        break;
+                    default:
+                        break;
+                }
+
+                var errorResponse = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    ReasonPhrase = "Amenity not found"
+                };
+
+                return new BadRequestObjectResult(errorResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+
+                var errorResponse = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    ReasonPhrase = "Amenity not found"
+                };
+
+                return new BadRequestObjectResult(errorResponse);
+            }
+        }
 
         //// DELETE api/<AmenitiesController>/5
         //[HttpDelete("{id}")]

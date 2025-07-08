@@ -8,6 +8,10 @@ select * from [dbo].[CommonAmenities]
 
 select * from [dbo].[MaintenanceLog]
 
+insert into [dbo].[MaintenanceLog]
+select MaintenaceDoneByName, MaintenaceCheckedByName, DateAndTime, Reason, Remarks, EngineId, WaterTankId, CommonAmenitiesId, GymId, SwimmingPoolId, WaterFiltrationSystemId
+from [dbo].[MaintenanceLog]
+
 [dbo].[Society]
 
 Id, Name, NoOfWings, FireSystemId, WaterFilterId, IndoorGymId, Health, TotalFlatAreaSociety, TotalMaintenanceChargeSociety

@@ -1,6 +1,8 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using Common;
 using SocietyManagementShowcase.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SocietyManagementUI.Api
 {
@@ -33,6 +35,28 @@ namespace SocietyManagementUI.Api
                 _logger.LogError(ex.ToString());
                 return null;
             }
+        }
+
+        public async Task<bool> PutAmenityAsync(AmenitiesResponse response)
+        {
+            try
+            {
+                var responseJson = new StringContent(
+                        JsonSerializer.Serialize(response),
+                        Encoding.UTF8,
+                        Application.Json);
+
+                var httpResponseMessage = await _httpClient.PutAsync($"/api/Amenities/{response.Type}", responseJson);
+                var jsonResponse = httpResponseMessage.Content.ReadAsStringAsync();
+                httpResponseMessage.EnsureSuccessStatusCode();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return false;
+            }
+
         }
     }
 }
