@@ -37,6 +37,7 @@ namespace SocietyManagementUI.Controllers
             }
         }
 
+        [AdminAuthorizationFilter]
         [HttpGet]
         public async Task<IActionResult> GymActionEdit()
         {

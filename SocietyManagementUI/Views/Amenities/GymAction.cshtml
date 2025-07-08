@@ -1,10 +1,12 @@
-﻿@model SocietyManagementShowcase.Models.Gym;
+﻿@using SocietyManagementShowcase.Models
+@using SocietyManagementUI.Common
+@model SocietyManagementShowcase.Models.Gym;
 
 <script type="text/javascript" language="javascript">
 	$(document).ready(function() {
-		console.log("The Gym is ready!");
-		M.AutoInit();
-		$('select').formSelect();
+	console.log("The Gym is ready!");
+	M.AutoInit();
+	$('select').formSelect();
 	});
 </script>
 
@@ -23,9 +25,12 @@
 			<td>
 				<input asp-for="Health" placeholder="Health Status" class="validate" disabled />
 			</td>
-			<td>
-				<a id="EditGymStatus" href="@Url.Action("GymActionEdit","Amenities")" class="btn-floating waves-effect waves-light"><i class="material-icons left">edit</i>Edit</a>
-			</td>
+			@if (Context.Session.GetInt32(Login.USERROLETYPE) <= (int)UserRoleType.Admin)
+			{
+				<td>
+					<a id="EditGymStatus" href="@Url.Action("GymActionEdit","Amenities")" class="btn-floating waves-effect waves-light"><i class="material-icons left">edit</i>Edit</a>
+				</td>
+			}
 		</tr>
 		<tr>
 			<td>Last Maintenance Check: </td>
