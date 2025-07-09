@@ -66,11 +66,32 @@ namespace SocietyManagementShowcase.Controllers
 
         }
 
-        //// POST api/<MaintenanceLogController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
+        // POST api/<MaintenanceLogController>
+        [HttpPost]
+        public async Task<IActionResult> PostMaintenanceLog(MaintenanceLogType type, [FromBody] MaintenanceLog log)
+        {
+            try
+            {
+                bool isSuccess = await _maintenanceRepo.PostMaintenanceLogAsync(type, log);
+                if (isSuccess)
+                {
+                    return Ok();
+                }
+                else
+                    return Unauthorized();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+
+                var errorResponse = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    ReasonPhrase = "An error occurred"
+                };
+                return new BadRequestObjectResult(errorResponse);
+            }
+        }
 
         //// PUT api/<MaintenanceLogController>/5
         //[HttpPut("{id}")]

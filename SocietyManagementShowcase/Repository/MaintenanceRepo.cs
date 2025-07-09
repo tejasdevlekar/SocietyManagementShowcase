@@ -26,7 +26,7 @@ namespace SocietyManagementShowcase.Repository
                     switch (type)
                     {
                         case MaintenanceLogType.Gym:
-                            if(lastId == 0)
+                            if (lastId == 0)
                             {
                                 lastId = _efCoreDbContext.MaintenanceLog
                                         .OrderByDescending(x => x.Id)
@@ -61,5 +61,45 @@ namespace SocietyManagementShowcase.Repository
                 return null;
             }
         }
+
+        public async Task<bool> PostMaintenanceLogAsync(MaintenanceLogType type, MaintenanceLog log)
+        {
+            try
+            {
+                using (_efCoreDbContext)
+                {
+                    switch (type)
+                    {
+                        case MaintenanceLogType.Gym:
+                            Gym retrivedGym = await _efCoreDbContext.Gym
+                                .Include(x => x.GymMaintenaceLog)
+                                .FirstOrDefaultAsync();
+                            if (retrivedGym == null) return false;
+                            
+                            retrivedGym.GymMaintenaceLog.Add(log);
+                            await _efCoreDbContext.SaveChangesAsync();
+                            
+                            return true;
+                            break;
+                        case MaintenanceLogType.SwimmingPool:
+                            break;
+                        case MaintenanceLogType.CommonAmenities:
+                            break;
+                        default:
+                            break;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return false;
+            }
+        }
+
+
+
+
     }
 }

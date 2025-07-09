@@ -28,36 +28,50 @@
 			Remarks
 		</td>
 	</tr>
-	@foreach (MaintenanceLog log in Model)
+	@if (Model.Count > 0)
 	{
+		@foreach (MaintenanceLog log in Model)
+		{
+			<tr>
+				<td>
+					@log.Id
+				</td>
+				<td>
+					@log.MaintenaceDoneByName
+				</td>
+				<td>
+					@log.MaintenaceCheckedByName
+				</td>
+				<td>
+					@log.DateAndTime
+				</td>
+				<td>
+					@log.Reason
+				</td>
+				<td>
+					@log.Remarks
+				</td>
+			</tr>
+		}
+
 		<tr>
-			<td>
-				@log.Id
-			</td>
-			<td>
-				@log.MaintenaceDoneByName
-			</td>
-			<td>
-				@log.MaintenaceCheckedByName
-			</td>
-			<td>
-				@log.DateAndTime
-			</td>
-			<td>
-				@log.Reason
-			</td>
-			<td>
-				@log.Remarks
+			<td colspan="6">
+				<div align="center">
+					<a href="/Amenities/GymMaintenanceLog/@(Model.FirstOrDefault().Id + 5)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_left</i></a>
+					<a href="/Amenities/GymMaintenanceLog/@(Model.LastOrDefault().Id - 1)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_right</i></a>
+				</div>
 			</td>
 		</tr>
 	}
-	<tr>
-		<td colspan="6">
-			<div align="center">
-				<a href="/Amenities/GymMaintenanceLog/@(Model.FirstOrDefault().Id + 5)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_left</i></a>
-				<a href="/Amenities/GymMaintenanceLog/@(Model.LastOrDefault().Id - 1)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_right</i></a>
-			</div>
-		</td>
-	</tr>
+	else
+	{
+		<tr>
+			<td>No data found</td>
+		</tr>
+	}
 </table>
+
+<div align="right">
+	<a href="/Amenities/AddMaintenanceLog" class="waves-effect waves-light btn"><i class="material-icons right">add</i>Add Maintenance Log</a>
+</div>
 

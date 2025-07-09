@@ -58,7 +58,8 @@ namespace SocietyManagementUI.Controllers
         {
             try
             {
-                AmenitiesResponse response = new AmenitiesResponse() { 
+                AmenitiesResponse response = new AmenitiesResponse()
+                {
                     Type = AmenityType.Gym,
                     Amenity = gym
                 };
@@ -83,8 +84,11 @@ namespace SocietyManagementUI.Controllers
             {
                 //lastId = lastId != null ? lastId : 0;
                 int lastId = id;
+                
                 List<MaintenanceLog> maintenanceLogs = await _maintenanceLogService
                     .GetMaintenanceLogsAsync(MaintenanceLogType.Gym, lastId);
+                if(maintenanceLogs == null)
+                    maintenanceLogs= new List<MaintenanceLog>();
                 return View(maintenanceLogs);
             }
             catch (Exception ex)
@@ -94,6 +98,51 @@ namespace SocietyManagementUI.Controllers
             }
         }
 
+        [StaffAuthorizationFilter]
+        [HttpGet]
+        public async Task<IActionResult> AddMaintenanceLog()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
 
+        [StaffAuthorizationFilter]
+        [HttpPost]
+        public async Task<IActionResult> AddMaintenanceLog(MaintenanceLogType type, MaintenanceLog log)
+        {
+            try
+            {
+                switch (type)
+                {
+                    case MaintenanceLogType.Gym:
+                        bool isSuccess = await _maintenanceLogService
+                                    .PostMaintenanceLogsAsync(MaintenanceLogType.Gym, log);
+                        if (isSuccess)
+                            return RedirectToAction("GymMaintenanceLog", "Amenities");
+                        else
+                            return RedirectToAction("Error", "Home");
+                        break;
+                    case MaintenanceLogType.SwimmingPool:
+                        break;
+                    case MaintenanceLogType.CommonAmenities:
+                        break;
+                    default:
+                        break;
+                }
+                return RedirectToAction("Error", "Home");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
     }
 }
