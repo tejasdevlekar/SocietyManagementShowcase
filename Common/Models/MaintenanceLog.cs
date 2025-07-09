@@ -8,6 +8,7 @@
         public DateTime DateAndTime { get; set; }
         public string Reason { get; set; }
         public string Remarks { get; set; }
+        public MaintenanceLogType LogType { get; set; }
     }
 
     public enum MaintenanceLogType

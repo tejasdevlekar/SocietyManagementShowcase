@@ -8,7 +8,7 @@
 </nav>
 
 <form asp-action="AddMaintenanceLog" asp-controller="Amenities" method="post">
-	<input name="type" value="@((int)MaintenanceLogType.Gym)" hidden />
+	<input name="type" value="@((int)Model.LogType)" hidden />
 	<table>
 		<tr>
 			<td>

@@ -78,17 +78,33 @@ namespace SocietyManagementUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GymMaintenanceLog(int id)
+        public async Task<IActionResult> GenericMaintenanceLog(int id, MaintenanceLogType type)
         {
             try
             {
                 //lastId = lastId != null ? lastId : 0;
                 int lastId = id;
-                
-                List<MaintenanceLog> maintenanceLogs = await _maintenanceLogService
+                List<MaintenanceLog> maintenanceLogs = new List<MaintenanceLog>();
+                switch (type)
+                {
+                    case MaintenanceLogType.Gym:
+                        maintenanceLogs = await _maintenanceLogService
                     .GetMaintenanceLogsAsync(MaintenanceLogType.Gym, lastId);
-                if(maintenanceLogs == null)
-                    maintenanceLogs= new List<MaintenanceLog>();
+                        if (maintenanceLogs == null)
+                            maintenanceLogs = new List<MaintenanceLog>();
+                        return View(maintenanceLogs);
+                        break;
+                    case MaintenanceLogType.SwimmingPool:
+                        break;
+                    case MaintenanceLogType.CommonAmenities:
+                        break;
+                    default:
+                        break;
+                }
+
+
+                if (maintenanceLogs == null)
+                    maintenanceLogs = new List<MaintenanceLog>();
                 return View(maintenanceLogs);
             }
             catch (Exception ex)
@@ -100,11 +116,14 @@ namespace SocietyManagementUI.Controllers
 
         [StaffAuthorizationFilter]
         [HttpGet]
-        public async Task<IActionResult> AddMaintenanceLog()
+        public async Task<IActionResult> AddMaintenanceLog(MaintenanceLogType type)
         {
             try
             {
-                return View();
+                MaintenanceLog log = new MaintenanceLog();
+                log.DateAndTime = System.DateTime.Now;
+                log.LogType = type;
+                return View(log);
             }
             catch (Exception ex)
             {
@@ -115,17 +134,21 @@ namespace SocietyManagementUI.Controllers
 
         [StaffAuthorizationFilter]
         [HttpPost]
-        public async Task<IActionResult> AddMaintenanceLog(MaintenanceLogType type, MaintenanceLog log)
+        public async Task<IActionResult> AddMaintenanceLog(MaintenanceLogType logType, MaintenanceLog log)
         {
             try
             {
-                switch (type)
+                switch (logType)
                 {
                     case MaintenanceLogType.Gym:
                         bool isSuccess = await _maintenanceLogService
                                     .PostMaintenanceLogsAsync(MaintenanceLogType.Gym, log);
                         if (isSuccess)
-                            return RedirectToAction("GymMaintenanceLog", "Amenities");
+                            return RedirectToAction("GenericMaintenanceLog", "Amenities", new
+                            {
+                                id = 0,
+                                type = (int)logType
+                            });
                         else
                             return RedirectToAction("Error", "Home");
                         break;
