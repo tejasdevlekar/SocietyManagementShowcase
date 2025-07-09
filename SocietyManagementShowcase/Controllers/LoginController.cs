@@ -15,11 +15,13 @@ namespace SocietyManagementShowcase.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        IUserRepo _userRepo;
+        private readonly IUserRepo _userRepo;
+        private readonly ILogger<LoginController> _logger;
 
-        public LoginController(IUserRepo userRepo)
+        public LoginController(IUserRepo userRepo, ILogger<LoginController> logger)
         {
             _userRepo = userRepo;
+            _logger = logger;
         }
         // GET: api/<ValuesController>
         [HttpGet]
@@ -58,7 +60,7 @@ namespace SocietyManagementShowcase.Controllers
                     {
                         status = false
                     };
-                    return new JsonResult(data);
+                    return new ObjectResult(JsonSerializer.Serialize(data));
                 }
             }
             catch (Exception ex)

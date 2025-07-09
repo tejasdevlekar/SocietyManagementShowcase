@@ -16,8 +16,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddScoped<IUserRepo, UserRepo>();
-builder.Services.AddScoped<EfCoreDbContext, EfCoreDbContext>();
+builder.Services.AddScoped<IUserRepo, UserRepo>()
+                .AddScoped<IAmenitiesRepo, AmenitiesRepo>()
+                .AddScoped<IMaintenanceRepo, MaintenanceRepo>()
+                .AddScoped<EfCoreDbContext, EfCoreDbContext>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

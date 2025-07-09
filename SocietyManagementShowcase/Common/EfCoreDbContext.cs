@@ -28,6 +28,8 @@ namespace SocietyManagementShowcase.Common
         public DbSet<Person> Person { get; set; }
         public DbSet<Flat> Flat { get; set; }
         public DbSet<Society> Society { get; set; }
+        public DbSet<Gym> Gym { get; set; }
+        public DbSet<MaintenanceLog> MaintenanceLog { get; set; }
 
     }
 }
