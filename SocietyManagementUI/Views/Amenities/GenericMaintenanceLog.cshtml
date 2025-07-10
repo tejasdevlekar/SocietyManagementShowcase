@@ -52,14 +52,21 @@
 				<td>
 					@log.Remarks
 				</td>
+				@if (Context.Session.GetInt32(Login.USERROLETYPE) <= (int)UserRoleType.Admin)
+				{
+					<td>
+						<a class="btn-floating waves-effect waves-light" href="@Url.Action("EditMaintenanceLog","Amenities",new {id = log.Id, logType = log.LogType})"><i class="material-icons left">edit</i>Edit</a>
+					</td>
+				}
+
 			</tr>
 		}
 
 		<tr>
 			<td colspan="6">
 				<div align="center">
-					<a href="/Amenities/GymMaintenanceLog/@(Model.FirstOrDefault().Id + 5)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_left</i></a>
-					<a href="/Amenities/GymMaintenanceLog/@(Model.LastOrDefault().Id - 1)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_right</i></a>
+					<a href="/Amenities/GenericMaintenanceLog/@(Model.FirstOrDefault().Id + 5)?type=@((int)Model.FirstOrDefault().LogType)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_left</i></a>
+					<a href="/Amenities/GenericMaintenanceLog/@(Model.LastOrDefault().Id - 1)?type=@((int)Model.FirstOrDefault().LogType)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_right</i></a>
 				</div>
 			</td>
 		</tr>
@@ -74,7 +81,7 @@
 @if (Context.Session.GetInt32(Login.USERROLETYPE) <= (int)UserRoleType.Staff)
 {
 	<div align="right">
-		<a href="/Amenities/AddMaintenanceLog" class="waves-effect waves-light btn"><i class="material-icons right">add</i>Add Maintenance Log</a>
+		<a href="/Amenities/AddMaintenanceLog?type=@((int)MaintenanceLogType.Gym)" class="waves-effect waves-light btn"><i class="material-icons right">add</i>Add Maintenance Log</a>
 	</div>
 }
 

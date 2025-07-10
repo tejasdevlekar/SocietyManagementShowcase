@@ -1,16 +1,17 @@
-﻿@using SocietyManagementShowcase.Models
-@model SocietyManagementShowcase.Models.MaintenanceLog
+﻿@model SocietyManagementShowcase.Models.MaintenanceLog;
 
 <nav>
 	<div class="nav-wrapper red accent-3 z-depth-2">
-		<a href="#" class="center brand-logo">Add Maintenance Log</a>
+		<a href="#" class="center brand-logo">Edit Maintenance Log</a>
 	</div>
 </nav>
 
-<form asp-action="AddMaintenanceLog" asp-controller="Amenities" method="post">
-	<input name="type" value="@((int)Model.LogType)" hidden />
-	<table>
-		<tr>
+<form asp-action="EditMaintenanceLog" asp-controller="Amenities" method="post">
+	<input asp-for="@Model.Id" hidden />
+	<input asp-for="@Model.LogType" hidden />
+
+<table>
+	<tr>
 			<td>
 				Maintenace Done By
 			</td>
@@ -18,8 +19,8 @@
 				<input asp-for="MaintenaceDoneByName" placeholder="Maintenace Done By Name" class="validate" />
 				<span asp-validation-for="MaintenaceDoneByName" class="text-danger"></span>
 			</td>
-		</tr>
-		<tr>
+	</tr>
+	<tr>
 			<td>
 				Maintenace Checked By
 			</td>
@@ -27,8 +28,8 @@
 				<input asp-for="MaintenaceCheckedByName" placeholder="Maintenace Checked By Name" class="validate" />
 				<span asp-validation-for="MaintenaceCheckedByName" class="text-danger"></span>
 			</td>
-		</tr>
-		<tr>
+	</tr>
+	<tr>
 			<td>
 				Date And Time
 			</td>
@@ -36,8 +37,8 @@
 				<input asp-for="DateAndTime" placeholder="Date And Time" class="validate" />
 				<span asp-validation-for="DateAndTime" class="text-danger"></span>
 			</td>
-		</tr>
-		<tr>
+	</tr>
+	<tr>
 			<td>
 				Reason
 			</td>
@@ -45,8 +46,8 @@
 				<input asp-for="Reason" placeholder="Reason" class="validate" />
 				<span asp-validation-for="Reason" class="text-danger"></span>
 			</td>
-		</tr>
-		<tr>
+	</tr>
+	<tr>
 			<td>
 				Remarks
 			</td>
@@ -54,21 +55,17 @@
 				<input asp-for="Remarks" placeholder="Remarks" class="validate" />
 				<span asp-validation-for="Remarks" class="text-danger"></span>
 			</td>
-		</tr>
-		<tr>
-			<td>
-				<input asp-for="LogType" value="@((int)Model.LogType)" hidden/>
-			</td>
-		</tr>
-		<tr>
+	</tr>
+	<tr>
 			<td colspan="2">
 				<div align="center">
 					<button class="btn waves-effect waves-light" type="submit" name="action">
-						Add Maintenance Log
-						<i class="material-icons right">add</i>
+						Edit Maintenance Log
+						<i class="material-icons right">edit</i>
 					</button>
 				</div>
 			</td>
-		</tr>
-	</table>
+	</tr>
+</table>	
 </form>
+
