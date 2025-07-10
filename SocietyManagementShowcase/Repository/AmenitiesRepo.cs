@@ -18,7 +18,7 @@ namespace SocietyManagementShowcase.Repository
             _logger = logger;
         }
 
-        public async Task<Gym> GetAmenityInfoAsync(AmenityType type)
+        public async Task<AmenitiesResponse> GetAmenityInfoAsync(AmenityType type)
         {
             try
             {
@@ -40,14 +40,17 @@ namespace SocietyManagementShowcase.Repository
                                     .FirstOrDefaultAsync();
                             gym.LastMaintenanceCheck = gym.GymMaintenaceLog.LastOrDefault().DateAndTime;
 
-                            return gym;
+                            AmenitiesResponse response = new AmenitiesResponse();
+                            response.Type = AmenityType.Gym;
+                            response.Amenity = gym;
+                            return response;
                         }
                         break;
-                    case AmenityType.SwimmingPoolOutdoor:
-                        return null; //temp change later
-                        break;
                     case AmenityType.SwimmingPoolIndoor:
-                        return null; //temp change later
+                        return null;
+                        break;
+                    case AmenityType.SwimmingPoolOutdoor:
+                        return null;
                         break;
                     case AmenityType.CommonAmenitiesMen:
                         return null; //temp change later

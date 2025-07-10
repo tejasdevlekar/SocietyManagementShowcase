@@ -78,6 +78,20 @@ namespace SocietyManagementUI.Controllers
             }
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> SwimmingPoolAction()
+        //{
+        //    try
+        //    {
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex.ToString());
+        //        return RedirectToAction("Error", "Home");
+        //    }
+        //}
+
         [HttpGet]
         public async Task<IActionResult> GenericMaintenanceLog(int id, MaintenanceLogType type)
         {

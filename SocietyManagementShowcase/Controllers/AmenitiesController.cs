@@ -40,22 +40,19 @@ namespace SocietyManagementShowcase.Controllers
             try
             {
                 AmenitiesResponse response = new AmenitiesResponse();
-                Gym gym = await _amenitiesRepo.GetAmenityInfoAsync(type);
-                if (gym != null)
-                {
-                    response.Type = AmenityType.Gym;
-                    response.Amenity = gym;
+                response = await _amenitiesRepo.GetAmenityInfoAsync(type);
+                if (response != null)
+                {   
                     return new ObjectResult(JsonSerializer.Serialize(response));
                 }
                 else
                 {
                     var errorResponse = new HttpResponseMessage(HttpStatusCode.BadRequest)
                     {
-                        Content = new StringContent(JsonSerializer.Serialize(gym), Encoding.UTF8, "application/json"),
                         ReasonPhrase = "Gym not found"
                     };
 
-                    return new ObjectResult(errorResponse);
+                    return new NotFoundObjectResult(errorResponse);
                 }
             }
             catch (Exception ex)
