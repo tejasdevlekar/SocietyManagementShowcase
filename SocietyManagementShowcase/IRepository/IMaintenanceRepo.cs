@@ -7,5 +7,6 @@ namespace SocietyManagementShowcase.IRepository
     {
         Task<List<MaintenanceLog>> GetMaintenanceLogAsync(MaintenanceLogType type, int lastId);
         Task<bool> PostMaintenanceLogAsync(MaintenanceLogType type, MaintenanceLog log);
+        Task<bool> EditMaintenanceLogAsync(MaintenanceLog log);
     }
 }

@@ -52,6 +52,13 @@
 				<td>
 					@log.Remarks
 				</td>
+				@if (Context.Session.GetInt32(Login.USERROLETYPE) <= (int)UserRoleType.Admin)
+				{
+					<td>
+						<a class="btn-floating waves-effect waves-light" href="@Url.Action("EditMaintenanceLog","Amenities",new {id = log.Id, logType = log.LogType})"><i class="material-icons left">edit</i>Edit</a>
+					</td>
+				}
+
 			</tr>
 		}
 

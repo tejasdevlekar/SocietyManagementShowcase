@@ -30,6 +30,7 @@ namespace SocietyManagementShowcase.Repository
                             {
                                 lastId = _efCoreDbContext.MaintenanceLog
                                         .OrderByDescending(x => x.Id)
+                                        .AsNoTracking()
                                         .FirstOrDefault()
                                         .Id;
                             }
@@ -98,6 +99,26 @@ namespace SocietyManagementShowcase.Repository
             }
         }
 
+
+        public async Task<bool> EditMaintenanceLogAsync(MaintenanceLog log)
+        {
+            try
+            {
+                using (_efCoreDbContext)
+                {
+                    MaintenanceLog retrievedLog = await _efCoreDbContext.MaintenanceLog.FindAsync(log.Id);
+                    _efCoreDbContext.Entry(retrievedLog).CurrentValues.SetValues(log);
+                    await _efCoreDbContext.SaveChangesAsync();
+                    return true;
+                }
+            
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return false;
+            }
+        }
 
 
 

@@ -3,6 +3,7 @@ using SocietyManagementShowcase.Models;
 using SocietyManagementUI.Api;
 using Common;
 using SocietyManagementUI.Filters;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace SocietyManagementUI.Controllers
 {
@@ -167,5 +168,45 @@ namespace SocietyManagementUI.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+
+
+        [AdminAuthorizationFilter]
+        [HttpGet]
+        public async Task<IActionResult> EditMaintenanceLog(int id, MaintenanceLogType logType)
+        {
+            try
+            {
+                MaintenanceLog log = await _maintenanceLogService.GetSingleMaintenanceLogAsync(id, logType);
+                log.LogType = logType;
+                return View(log);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [AdminAuthorizationFilter]
+        [HttpPost]
+        public async Task<IActionResult> EditMaintenanceLog(MaintenanceLog log)
+        {
+            try
+            {
+                bool isSuccess = await _maintenanceLogService.PutMaintenanceLogsAsync(log);
+                if (isSuccess)
+                    return RedirectToAction("GenericMaintenanceLog", "Amenities",
+                        new { id = 0, type = log.LogType });
+                else
+                    return RedirectToAction("Error", "Home");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+
     }
 }

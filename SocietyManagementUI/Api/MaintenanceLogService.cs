@@ -35,6 +35,23 @@ namespace SocietyManagementUI.Api
             }
         }
 
+        public async Task<MaintenanceLog> GetSingleMaintenanceLogAsync(int id, MaintenanceLogType logType)
+        {
+            try
+            {
+                var httpResponseMessage = await _httpClient.GetAsync($"/api/MaintenanceLog/{logType}?lastId={id}");
+                var jsonResponse = httpResponseMessage?.Content.ReadAsStringAsync();
+                List<MaintenanceLog> maintenanceLogs =
+                    JsonSerializer.Deserialize<List<MaintenanceLog>>(jsonResponse.Result.ToString());
+                return maintenanceLogs.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return null;
+            }
+        }
+
         public async Task<bool> PostMaintenanceLogsAsync(MaintenanceLogType type, MaintenanceLog log)
         {
             try
@@ -55,6 +72,26 @@ namespace SocietyManagementUI.Api
             }
         }
 
+        public async Task<bool> PutMaintenanceLogsAsync(MaintenanceLog log)
+        {
+            try
+            {
+                var logJson = new StringContent(
+                    JsonSerializer.Serialize(log),
+                    Encoding.UTF8,
+                    Application.Json);
+
+                var httpResponseMessage = await _httpClient.PutAsync($"/api/MaintenanceLog", logJson);
+                httpResponseMessage.EnsureSuccessStatusCode();
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return false;
+            }
+        }
 
 
     }
