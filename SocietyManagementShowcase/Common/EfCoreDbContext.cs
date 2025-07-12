@@ -1,6 +1,6 @@
 ﻿using System.Reflection.Metadata;
 using Microsoft.EntityFrameworkCore;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 
 namespace SocietyManagementShowcase.Common
 {

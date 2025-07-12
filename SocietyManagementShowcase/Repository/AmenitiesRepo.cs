@@ -3,7 +3,8 @@ using Common;
 using Microsoft.EntityFrameworkCore;
 using SocietyManagementShowcase.Common;
 using SocietyManagementShowcase.IRepository;
-using SocietyManagementShowcase.Models;
+using Common.Models;
+using Common.Common;
 
 namespace SocietyManagementShowcase.Repository
 {
@@ -28,17 +29,17 @@ namespace SocietyManagementShowcase.Repository
                         using (_efCoreDbContext)
                         {
                             int latestId = _efCoreDbContext.Gym
-                                .Include(x => x.GymMaintenaceLog)
+                                .Include(x => x.MaintenaceLog)
                                 .AsNoTracking()
-                                .FirstOrDefault().GymMaintenaceLog.LastOrDefault().Id;
+                                .FirstOrDefault().MaintenaceLog.LastOrDefault().Id;
 
 
                             Gym gym = await _efCoreDbContext.Gym
-                                    .Include(x => x.GymMaintenaceLog
+                                    .Include(x => x.MaintenaceLog
                                     .Where(y => y.Id == latestId))
                                     .AsNoTracking()
                                     .FirstOrDefaultAsync();
-                            gym.LastMaintenanceCheck = gym.GymMaintenaceLog.LastOrDefault().DateAndTime;
+                            gym.LastMaintenanceCheck = gym.MaintenaceLog.LastOrDefault().DateAndTime;
 
                             AmenitiesResponse response = new AmenitiesResponse();
                             response.Type = AmenityType.Gym;
@@ -51,6 +52,7 @@ namespace SocietyManagementShowcase.Repository
                         {
                             SwimmingPool pool = await _efCoreDbContext.SwimmingPool
                                 .Where(x => x.PoolType == SwimmingPoolType.Indoor).FirstOrDefaultAsync();
+
                             AmenitiesResponse response = new AmenitiesResponse();
                             response.Type = AmenityType.SwimmingPoolIndoor;
                             response.Amenity = pool;

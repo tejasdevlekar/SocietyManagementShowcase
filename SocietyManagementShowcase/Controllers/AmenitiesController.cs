@@ -6,8 +6,9 @@ using Common;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.IRepository;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Common.Common;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -39,10 +40,9 @@ namespace SocietyManagementShowcase.Controllers
         {
             try
             {
-                AmenitiesResponse response = new AmenitiesResponse();
-                response = await _amenitiesRepo.GetAmenityInfoAsync(type);
+                AmenitiesResponse response = await _amenitiesRepo.GetAmenityInfoAsync(type);
                 if (response != null)
-                {   
+                {
                     return new OkObjectResult(JsonSerializer.Serialize(response));
                 }
                 else

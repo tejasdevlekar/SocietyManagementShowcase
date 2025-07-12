@@ -1,6 +1,6 @@
-﻿using SocietyManagementShowcase.Common;
+﻿using Common.Common;
 
-namespace SocietyManagementShowcase.Models
+namespace Common.Models
 {
     public class Flat
     {

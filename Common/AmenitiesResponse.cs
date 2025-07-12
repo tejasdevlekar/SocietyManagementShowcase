@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,12 +13,5 @@ namespace Common
         public object Amenity { get; set; }
     }
 
-    public enum AmenityType
-    {
-        Gym = 0,
-        SwimmingPoolIndoor,
-        SwimmingPoolOutdoor,
-        CommonAmenitiesMen,
-        CommonAmenitiesWomen
-    }
+
 }

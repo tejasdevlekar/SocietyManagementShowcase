@@ -1,10 +1,11 @@
 ﻿using Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 using SocietyManagementUI.Api;
 using SocietyManagementUI.Filters;
 using System.Text.Json;
+using Common.Common;
 
 namespace SocietyManagementUI.Controllers
 {

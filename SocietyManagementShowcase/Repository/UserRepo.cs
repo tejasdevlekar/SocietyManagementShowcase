@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SocietyManagementShowcase.Common;
 using SocietyManagementShowcase.IRepository;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 
 namespace SocietyManagementShowcase.Repository
 {

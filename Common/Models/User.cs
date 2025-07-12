@@ -1,4 +1,4 @@
-﻿namespace SocietyManagementShowcase.Models
+﻿namespace Common.Models
 {
     public class User
     {

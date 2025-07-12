@@ -1,7 +1,8 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Common;
-using SocietyManagementShowcase.Models;
+using Common.Common;
+using Common.Models;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace SocietyManagementUI.Api
@@ -18,7 +19,7 @@ namespace SocietyManagementUI.Api
             _logger = logger;
         }
 
-        public async Task<AmenitiesResponse> GetAmenityAsync(AmenityType type)
+        public async Task<AmenitiesResponse > GetAmenityAsync(AmenityType type)
         {
 
             try
@@ -26,7 +27,6 @@ namespace SocietyManagementUI.Api
                 var httpResponseMessage = await _httpClient.GetAsync($"/api/Amenities?type={type}");
                 var jsonResponse = httpResponseMessage.Content.ReadAsStringAsync();
                 AmenitiesResponse response = JsonSerializer.Deserialize<AmenitiesResponse>(jsonResponse.Result.ToString());
-                
                 return response;
             }
             catch (Exception ex)

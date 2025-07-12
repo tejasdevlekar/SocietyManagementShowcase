@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Common;
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.IRepository;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Azure.Core;
 using Azure.Messaging;
