@@ -30,7 +30,7 @@ namespace SocietyManagementShowcase.Common
         public DbSet<Society> Society { get; set; }
         public DbSet<Gym> Gym { get; set; }
         public DbSet<MaintenanceLog> MaintenanceLog { get; set; }
-        public DbSet<SwimmingPool> SwimmingPools { get; set; }
+        public DbSet<SwimmingPool> SwimmingPool { get; set; }
 
     }
 }

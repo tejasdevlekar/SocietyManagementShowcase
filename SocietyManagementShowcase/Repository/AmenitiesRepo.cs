@@ -47,6 +47,15 @@ namespace SocietyManagementShowcase.Repository
                         }
                         break;
                     case AmenityType.SwimmingPoolIndoor:
+                        using (_efCoreDbContext)
+                        {
+                            SwimmingPool pool = await _efCoreDbContext.SwimmingPool
+                                .Where(x => x.PoolType == SwimmingPoolType.Indoor).FirstOrDefaultAsync();
+                            AmenitiesResponse response = new AmenitiesResponse();
+                            response.Type = AmenityType.SwimmingPoolIndoor;
+                            response.Amenity = pool;
+                            return response;
+                        }
                         return null;
                         break;
                     case AmenityType.SwimmingPoolOutdoor:
@@ -71,7 +80,7 @@ namespace SocietyManagementShowcase.Repository
         }
 
 
-        public async Task<bool> UpdateAmenityInfoAsync(AmenityType type, AmenitiesResponse  response)
+        public async Task<bool> UpdateAmenityInfoAsync(AmenityType type, AmenitiesResponse response)
         {
             try
             {

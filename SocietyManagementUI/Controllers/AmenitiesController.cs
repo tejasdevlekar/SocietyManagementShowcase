@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Common;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Constraints;
 using SocietyManagementShowcase.Models;
 using SocietyManagementUI.Api;
-using Common;
 using SocietyManagementUI.Filters;
-using Microsoft.AspNetCore.Routing.Constraints;
+using System.Text.Json;
 
 namespace SocietyManagementUI.Controllers
 {
@@ -28,7 +29,8 @@ namespace SocietyManagementUI.Controllers
         {
             try
             {
-                Gym gym = await _amenitiesService.GetAmenityAsync(AmenityType.Gym);
+                AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.Gym);
+                Gym gym = JsonSerializer.Deserialize<Gym>(response.Amenity.ToString());
                 return View(gym);
             }
             catch (Exception ex)
@@ -44,7 +46,8 @@ namespace SocietyManagementUI.Controllers
         {
             try
             {
-                Gym gym = await _amenitiesService.GetAmenityAsync(AmenityType.Gym);
+                AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.Gym);
+                Gym gym = JsonSerializer.Deserialize<Gym>(response.Amenity.ToString());
                 return View(gym);
             }
             catch (Exception ex)
@@ -78,19 +81,21 @@ namespace SocietyManagementUI.Controllers
             }
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> SwimmingPoolAction()
-        //{
-        //    try
-        //    {
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex.ToString());
-        //        return RedirectToAction("Error", "Home");
-        //    }
-        //}
+        [HttpGet]
+        public async Task<IActionResult> SwimmingPoolAction()
+        {
+            try
+            {
+                AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolIndoor);
+                SwimmingPool pool = JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
+                return View(pool);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
 
         [HttpGet]
         public async Task<IActionResult> GenericMaintenanceLog(int id, MaintenanceLogType type)

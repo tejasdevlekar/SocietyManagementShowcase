@@ -1,0 +1,26 @@
+﻿@model SocietyManagementShowcase.Models.SwimmingPool;
+
+<nav>
+    <div class="nav-wrapper red accent-3 z-depth-2">
+        <a href="#" class="center brand-logo">Swimming Pool</a>
+    </div>
+</nav>
+
+<br />
+<br />
+<div align="left" style="width: 36%">
+    <table>
+        <tr>
+            <td>Health Status: </td>
+            <td>
+                <input asp-for="Health" placeholder="Health Status" class="validate" disabled />
+            </td>
+        </tr>
+        <tr>
+            <td>Last Maintenance Check: </td>
+            <td>
+                <input asp-for="LastMaintenanceCheck" placeholder="Last Maintenance Check" class="validate" disabled />
+            </td>
+        </tr>
+    </table>
+</div>

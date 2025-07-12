@@ -34,7 +34,7 @@ namespace SocietyManagementShowcase.Controllers
         //}
 
         // GET api/<AmenitiesController>/5
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> Get(AmenityType type)
         {
             try
@@ -43,7 +43,7 @@ namespace SocietyManagementShowcase.Controllers
                 response = await _amenitiesRepo.GetAmenityInfoAsync(type);
                 if (response != null)
                 {   
-                    return new ObjectResult(JsonSerializer.Serialize(response));
+                    return new OkObjectResult(JsonSerializer.Serialize(response));
                 }
                 else
                 {
