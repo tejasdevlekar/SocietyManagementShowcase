@@ -1,5 +1,5 @@
 ﻿using Common;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 
 namespace SocietyManagementShowcase.IRepository
 {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 using SocietyManagementUI.Api;
 using SocietyManagementUI.Filters;
 

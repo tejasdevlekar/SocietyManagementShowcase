@@ -1,12 +1,13 @@
-﻿using SocietyManagementShowcase.Common;
+﻿using Common.Common;
 
-namespace SocietyManagementShowcase.Models
+namespace Common.Models
 {
     public class Gym
     {
         public int Id { get; set; }
         public StatusHealth Health { get; set; }
-        public List<MaintenanceLog> GymMaintenaceLog { get; set; }
+        public List<MaintenanceLog> MaintenaceLog { get; set; }
         public DateTime LastMaintenanceCheck { get; set; }
+        public AmenityType AmenityType { get; set; }
     }
 }

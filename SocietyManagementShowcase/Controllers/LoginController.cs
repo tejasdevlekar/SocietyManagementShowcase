@@ -4,7 +4,7 @@ using System.Text.Json;
 using Common;
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.IRepository;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 using SocietyManagementShowcase.Repository;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

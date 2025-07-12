@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SocietyManagementShowcase.Common;
 using SocietyManagementShowcase.IRepository;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 
 namespace SocietyManagementShowcase.Repository
 {
@@ -36,13 +36,13 @@ namespace SocietyManagementShowcase.Repository
                             }
                             Gym gym = await _efCoreDbContext.Gym
                                 .Include(
-                                    x => x.GymMaintenaceLog.OrderByDescending(y => y.Id)
+                                    x => x.MaintenaceLog.OrderByDescending(y => y.Id)
                                     .Where(p => p.Id <= lastId)
                                     .Take(5)
                                 )
                                 .AsNoTracking()
                                 .FirstOrDefaultAsync(); //Since there's only 1 Gym
-                            return gym.GymMaintenaceLog;
+                            return gym.MaintenaceLog;
                             break;
                         case MaintenanceLogType.SwimmingPool:
                             return null; //change later
@@ -73,11 +73,11 @@ namespace SocietyManagementShowcase.Repository
                     {
                         case MaintenanceLogType.Gym:
                             Gym retrivedGym = await _efCoreDbContext.Gym
-                                .Include(x => x.GymMaintenaceLog)
+                                .Include(x => x.MaintenaceLog)
                                 .FirstOrDefaultAsync();
                             if (retrivedGym == null) return false;
                             
-                            retrivedGym.GymMaintenaceLog.Add(log);
+                            retrivedGym.MaintenaceLog.Add(log);
                             await _efCoreDbContext.SaveChangesAsync();
                             
                             return true;
