@@ -14,7 +14,9 @@
     public enum MaintenanceLogType
     {
         Gym = 0,
-        SwimmingPool,
-        CommonAmenities
+        SwimmingPoolIndoor,
+        SwimmingPoolOutdoor,
+        CommonAmenitiesMen,
+        CommonAmenitiesWomen
     }
 }

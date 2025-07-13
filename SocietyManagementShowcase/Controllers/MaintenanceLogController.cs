@@ -31,7 +31,7 @@ namespace SocietyManagementShowcase.Controllers
         //}
 
         // GET api/<MaintenanceLogController>/5
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> GetMaintenanceLog(MaintenanceLogType type, int lastId)
         {
             try

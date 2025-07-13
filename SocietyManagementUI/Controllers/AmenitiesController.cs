@@ -98,6 +98,23 @@ namespace SocietyManagementUI.Controllers
             }
         }
 
+        [AdminAuthorizationFilter]
+        [HttpGet]
+        public async Task<IActionResult> SwimmingPoolActionEdit()
+        {
+            try
+            {
+                AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolIndoor);
+                SwimmingPool pool= JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
+                return View(gym);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> GenericMaintenanceLog(int id, MaintenanceLogType type)
         {
@@ -115,9 +132,16 @@ namespace SocietyManagementUI.Controllers
                             maintenanceLogs = new List<MaintenanceLog>();
                         return View(maintenanceLogs);
                         break;
-                    case MaintenanceLogType.SwimmingPool:
+
+                    case MaintenanceLogType.SwimmingPoolIndoor:
+                        maintenanceLogs = await _maintenanceLogService
+                    .GetMaintenanceLogsAsync(MaintenanceLogType.SwimmingPoolIndoor, lastId);
+                        if (maintenanceLogs == null)
+                            maintenanceLogs = new List<MaintenanceLog>();
+                        return View(maintenanceLogs);
                         break;
-                    case MaintenanceLogType.CommonAmenities:
+
+                    case MaintenanceLogType.CommonAmenitiesMen:
                         break;
                     default:
                         break;
@@ -173,9 +197,19 @@ namespace SocietyManagementUI.Controllers
                         else
                             return RedirectToAction("Error", "Home");
                         break;
-                    case MaintenanceLogType.SwimmingPool:
+                    case MaintenanceLogType.SwimmingPoolIndoor:
+                        bool isSuccessIndoor = await _maintenanceLogService
+                                    .PostMaintenanceLogsAsync(MaintenanceLogType.SwimmingPoolIndoor, log);
+                        if (isSuccessIndoor)
+                            return RedirectToAction("GenericMaintenanceLog", "Amenities", new
+                            {
+                                id = 0,
+                                type = (int)logType
+                            });
+                        else
+                            return RedirectToAction("Error", "Home");
                         break;
-                    case MaintenanceLogType.CommonAmenities:
+                    case MaintenanceLogType.CommonAmenitiesMen:
                         break;
                     default:
                         break;

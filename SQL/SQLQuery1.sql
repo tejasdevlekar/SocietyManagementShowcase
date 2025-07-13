@@ -7,7 +7,8 @@ select * from [dbo].[Gym]
 select *  from [dbo].[SwimmingPool]
 select * from [dbo].[CommonAmenities]
 
-select * from [dbo].[MaintenanceLog] order by DateAndTime desc
+
+select * from [dbo].[MaintenanceLog] order by id desc
 
 insert into [dbo].[MaintenanceLog]
 select MaintenaceDoneByName, MaintenaceCheckedByName, DateAndTime, Reason, Remarks, EngineId, WaterTankId, CommonAmenitiesId, GymId, SwimmingPoolId, WaterFiltrationSystemId
