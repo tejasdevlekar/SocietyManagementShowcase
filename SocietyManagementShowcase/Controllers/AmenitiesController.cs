@@ -108,9 +108,19 @@ namespace SocietyManagementShowcase.Controllers
                         else
                             return BadRequest();
                             break;
-                    case AmenityType.SwimmingPoolOutdoor:
-                        break;
                     case AmenityType.SwimmingPoolIndoor:
+                        bool isIndoorSuccess = await _amenitiesRepo.UpdateAmenityInfoAsync(AmenityType.SwimmingPoolIndoor, value);
+                        if (isIndoorSuccess)
+                            return Ok();
+                        else
+                            return BadRequest();
+                        break;
+                    case AmenityType.SwimmingPoolOutdoor:
+                        bool isOutdoorSuccess = await _amenitiesRepo.UpdateAmenityInfoAsync(AmenityType.SwimmingPoolOutdoor, value);
+                        if (isOutdoorSuccess)
+                            return Ok();
+                        else
+                            return BadRequest();
                         break;
                     case AmenityType.CommonAmenitiesMen:
                         break;

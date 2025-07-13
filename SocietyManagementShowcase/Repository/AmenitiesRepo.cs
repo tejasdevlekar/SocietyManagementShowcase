@@ -50,18 +50,50 @@ namespace SocietyManagementShowcase.Repository
                     case AmenityType.SwimmingPoolIndoor:
                         using (_efCoreDbContext)
                         {
+                            int latestId = _efCoreDbContext.SwimmingPool
+                                .Where(a => a.PoolType == SwimmingPoolType.Indoor)
+                                .Include(x => x.MaintenaceLog)
+                                .AsNoTracking()
+                                .FirstOrDefault().MaintenaceLog.LastOrDefault().Id;
+
                             SwimmingPool pool = await _efCoreDbContext.SwimmingPool
-                                .Where(x => x.PoolType == SwimmingPoolType.Indoor).FirstOrDefaultAsync();
+                                .Where(x => x.PoolType == SwimmingPoolType.Indoor)
+                                .Include(a => a.MaintenaceLog
+                                .Where(b => b.Id == latestId))
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+                            pool.LastMaintenanceCheck = pool.MaintenaceLog.LastOrDefault().DateAndTime;
 
                             AmenitiesResponse response = new AmenitiesResponse();
                             response.Type = AmenityType.SwimmingPoolIndoor;
                             response.Amenity = pool;
                             return response;
                         }
-                        return null;
                         break;
                     case AmenityType.SwimmingPoolOutdoor:
-                        return null;
+                        using (_efCoreDbContext)
+                        {
+                                int latestId = _efCoreDbContext.SwimmingPool
+                                .Where(a => a.PoolType == SwimmingPoolType.Outdoor)
+                                .Include(x => x.MaintenaceLog)
+                                .AsNoTracking()
+                                .FirstOrDefault().MaintenaceLog.LastOrDefault().Id;
+
+                            SwimmingPool pool = await _efCoreDbContext.SwimmingPool
+                                .Where(x => x.PoolType == SwimmingPoolType.Outdoor)
+                                .Include(a => a.MaintenaceLog
+                                .Where(b => b.Id == latestId))
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+
+                            pool.LastMaintenanceCheck = pool.MaintenaceLog.LastOrDefault().DateAndTime;
+                           
+                            AmenitiesResponse response = new AmenitiesResponse();
+                            response.Type = AmenityType.SwimmingPoolIndoor;
+                            response.Amenity = pool;
+                            return response;
+
+                        }
                         break;
                     case AmenityType.CommonAmenitiesMen:
                         return null; //temp change later
@@ -102,10 +134,38 @@ namespace SocietyManagementShowcase.Repository
                             else return false;
                         }
                         break;
-                    case AmenityType.SwimmingPoolOutdoor:
+                    case AmenityType.SwimmingPoolIndoor:
+                        using (_efCoreDbContext)
+                        {
+                            SwimmingPool retrievedPool = await _efCoreDbContext.SwimmingPool
+                                .Where(x => x.PoolType == SwimmingPoolType.Indoor)
+                                .FirstOrDefaultAsync();
+                            SwimmingPool postedPool = JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
+                            if (retrievedPool != null)
+                            {
+                                retrievedPool.Health = postedPool.Health;
+                                await _efCoreDbContext.SaveChangesAsync();
+                                return true;
+                            }
+                            else return false;
+                        }
                         return false;
                         break;
-                    case AmenityType.SwimmingPoolIndoor:
+                    case AmenityType.SwimmingPoolOutdoor:
+                        using(_efCoreDbContext)
+                        {
+                            SwimmingPool retrievedPool = await _efCoreDbContext.SwimmingPool
+                                .Where(x => x.PoolType == SwimmingPoolType.Outdoor)
+                                .FirstOrDefaultAsync();
+                            SwimmingPool postedPool = JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
+                            if (retrievedPool != null)
+                            {
+                                retrievedPool.Health = postedPool.Health;
+                                await _efCoreDbContext.SaveChangesAsync();
+                                return true;
+                            }
+                            else return false;
+                        }
                         return false;
                         break;
                     case AmenityType.CommonAmenitiesMen:

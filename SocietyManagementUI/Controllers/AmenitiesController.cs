@@ -6,6 +6,7 @@ using SocietyManagementUI.Api;
 using SocietyManagementUI.Filters;
 using System.Text.Json;
 using Common.Common;
+using SocietyManagementUI.Models;
 
 namespace SocietyManagementUI.Controllers
 {
@@ -83,13 +84,23 @@ namespace SocietyManagementUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SwimmingPoolAction()
+        public async Task<IActionResult> SwimmingPoolAction(int id)
         {
             try
             {
-                AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolIndoor);
-                SwimmingPool pool = JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
-                return View(pool);
+                if(id == (int)SwimmingPoolType.Indoor)
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolIndoor);
+                    SwimmingPool pool = JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
+                    return View(pool);
+                }
+                else
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolOutdoor);
+                    SwimmingPool pool = JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
+                    return View(pool);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -100,13 +111,64 @@ namespace SocietyManagementUI.Controllers
 
         [AdminAuthorizationFilter]
         [HttpGet]
-        public async Task<IActionResult> SwimmingPoolActionEdit()
+        public async Task<IActionResult> SwimmingPoolActionEdit(int id)
         {
             try
             {
-                AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolIndoor);
-                SwimmingPool pool= JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
-                return View(gym);
+                if (id == (int)SwimmingPoolType.Indoor)
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolIndoor);
+                    SwimmingPoolActionEditViewModel pool = JsonSerializer.Deserialize<SwimmingPoolActionEditViewModel>(response.Amenity.ToString());
+                    return View(pool);
+                }
+                else
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolOutdoor);
+                    SwimmingPoolActionEditViewModel pool = JsonSerializer.Deserialize<SwimmingPoolActionEditViewModel>(response.Amenity.ToString());
+                    return View(pool);
+                }
+                    
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SwimmingPoolActionEdit(SwimmingPool pool)
+        {
+            try
+            {
+                if (pool.PoolType == SwimmingPoolType.Indoor)
+                {
+                    AmenitiesResponse response = new AmenitiesResponse()
+                    {
+                        Type = AmenityType.SwimmingPoolIndoor,
+                        Amenity = pool
+                    };
+
+                    bool isSuccess = await _amenitiesService.PutAmenityAsync(response);
+                    if (isSuccess)
+                        return RedirectToAction("SwimmingPoolAction", "Amenities", new { id = (int)pool.PoolType });
+                    else
+                        return RedirectToAction("Error", "Home");
+                }
+                else
+                {
+                    AmenitiesResponse response = new AmenitiesResponse()
+                    {
+                        Type = AmenityType.SwimmingPoolOutdoor,
+                        Amenity = pool
+                    };
+                    bool isSuccess = await _amenitiesService.PutAmenityAsync(response);
+                    if (isSuccess)
+                        return RedirectToAction("SwimmingPoolAction", "Amenities", new { id = (int)pool.PoolType });
+                    else
+                        return RedirectToAction("Error", "Home");
+                }
+                
             }
             catch (Exception ex)
             {

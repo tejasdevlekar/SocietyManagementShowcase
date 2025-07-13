@@ -1,11 +1,15 @@
 ﻿@using Common.Models
+@using SocietyManagementUI.Common
 @model Common.Models.SwimmingPool;
 
-<nav>
+@* <nav>
     <div class="nav-wrapper red accent-3 z-depth-2">
         <a href="#" class="center brand-logo">Swimming Pool</a>
     </div>
-</nav>
+</nav> *@
+<h1 align="center" style="font-family: Palace Script MT;font-size: 87px;color: #6a6a6a;">
+    Swimming Pool @Model.PoolType.ToString()
+</h1>
 
 <br />
 <br />
@@ -16,6 +20,12 @@
             <td>
                 <input asp-for="Health" placeholder="Health Status" class="validate" disabled />
             </td>
+            @if (Context.Session.GetInt32(Login.USERROLETYPE) <= (int)UserRoleType.Admin)
+            {
+                <td>
+                    <a id="EditSwimmingPoolStatus" href="@Url.Action("SwimmingPoolActionEdit", "Amenities", new {id = (int)Model.PoolType})" class="btn-floating waves-effect waves-light"><i class="material-icons left">edit</i>Edit</a>
+                </td>
+            }
         </tr>
         <tr>
             <td>Last Maintenance Check: </td>
