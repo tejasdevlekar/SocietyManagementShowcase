@@ -202,7 +202,13 @@ namespace SocietyManagementUI.Controllers
                             maintenanceLogs = new List<MaintenanceLog>();
                         return View(maintenanceLogs);
                         break;
-
+                    case MaintenanceLogType.SwimmingPoolOutdoor:
+                        maintenanceLogs = await _maintenanceLogService
+                    .GetMaintenanceLogsAsync(MaintenanceLogType.SwimmingPoolOutdoor, lastId);
+                        if (maintenanceLogs == null)
+                            maintenanceLogs = new List<MaintenanceLog>();
+                        return View(maintenanceLogs);
+                        break;
                     case MaintenanceLogType.CommonAmenitiesMen:
                         break;
                     default:
@@ -263,6 +269,18 @@ namespace SocietyManagementUI.Controllers
                         bool isSuccessIndoor = await _maintenanceLogService
                                     .PostMaintenanceLogsAsync(MaintenanceLogType.SwimmingPoolIndoor, log);
                         if (isSuccessIndoor)
+                            return RedirectToAction("GenericMaintenanceLog", "Amenities", new
+                            {
+                                id = 0,
+                                type = (int)logType
+                            });
+                        else
+                            return RedirectToAction("Error", "Home");
+                        break;
+                    case MaintenanceLogType.SwimmingPoolOutdoor:
+                        bool isSuccessOutdoor = await _maintenanceLogService
+                                    .PostMaintenanceLogsAsync(MaintenanceLogType.SwimmingPoolOutdoor, log);
+                        if (isSuccessOutdoor)
                             return RedirectToAction("GenericMaintenanceLog", "Amenities", new
                             {
                                 id = 0,
