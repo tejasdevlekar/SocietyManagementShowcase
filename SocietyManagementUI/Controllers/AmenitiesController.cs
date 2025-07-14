@@ -136,6 +136,7 @@ namespace SocietyManagementUI.Controllers
             }
         }
 
+        [AdminAuthorizationFilter]
         [HttpPost]
         public async Task<IActionResult> SwimmingPoolActionEdit(SwimmingPool pool)
         {
@@ -169,6 +170,117 @@ namespace SocietyManagementUI.Controllers
                         return RedirectToAction("Error", "Home");
                 }
                 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CommonAmenitiesAction()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> CommonAmenitiesStatus(int id)
+        {
+            try
+            {
+                if (id == (int)AmenityType.CommonAmenitiesMen)
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.CommonAmenitiesMen);
+                    CommonAmenities commonAmenities = JsonSerializer.Deserialize<CommonAmenities>(response.Amenity.ToString());
+                    return View(commonAmenities);
+                }
+                else
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.CommonAmenitiesWomen);
+                    CommonAmenities commonAmenities = JsonSerializer.Deserialize<CommonAmenities>(response.Amenity.ToString());
+                    return View(commonAmenities);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [AdminAuthorizationFilter]
+        [HttpGet]
+        public async Task<IActionResult> CommonAmenitiesStatusEdit(int id)
+        {
+            try
+            {
+                if(id == (int)AmenityType.CommonAmenitiesMen)
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.CommonAmenitiesMen);
+                    CommonAmenities amenity = JsonSerializer.Deserialize<CommonAmenities>(response.Amenity.ToString());
+                    return View(amenity);
+                }
+                else
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.CommonAmenitiesWomen);
+                    CommonAmenities amenity = JsonSerializer.Deserialize<CommonAmenities>(response.Amenity.ToString());
+                    return View(amenity);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+
+        [AdminAuthorizationFilter]
+        [HttpPost]
+        public async Task<IActionResult> CommonAmenitiesStatusEdit(CommonAmenities amenities)
+        {
+            try
+            {
+                if (amenities.AmenityType == AmenityType.CommonAmenitiesMen)
+                {
+                    AmenitiesResponse response = new AmenitiesResponse()
+                    {
+                        Type = AmenityType.CommonAmenitiesMen,
+                        Amenity = amenities
+                    };
+
+                    bool isSuccess = await _amenitiesService.PutAmenityAsync(response);
+                    if (isSuccess)
+                        return RedirectToAction("CommonAmenitiesStatus", "Amenities", 
+                            new { id = (int)AmenityType.CommonAmenitiesMen });
+                    else
+                        return RedirectToAction("Error", "Home");
+                }
+                else
+                {
+                    AmenitiesResponse response = new AmenitiesResponse()
+                    {
+                        Type = AmenityType.CommonAmenitiesWomen,
+                        Amenity = amenities
+                    };
+
+                    bool isSuccess = await _amenitiesService.PutAmenityAsync(response);
+                    if (isSuccess)
+                        return RedirectToAction("CommonAmenitiesStatus", "Amenities", 
+                            new { id = (int)AmenityType.CommonAmenitiesWomen});
+                    else
+                        return RedirectToAction("Error", "Home");
+                }
             }
             catch (Exception ex)
             {

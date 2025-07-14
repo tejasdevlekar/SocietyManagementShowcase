@@ -1,0 +1,38 @@
+﻿@using Common.Models
+@using SocietyManagementUI.Common
+@model Common.Models.CommonAmenities;
+
+<h1 align="center" style="font-family: Palace Script MT;font-size: 87px;color: #6a6a6a;">
+    @if(Model.AmenityType == Common.Common.AmenityType.CommonAmenitiesMen)
+    {
+        <span>Men's Common Amenities</span>
+    }
+    else
+    {
+        <span>Women's Common Amenities</span>
+    }
+</h1>
+<br />
+<br />
+<div align="left" style="width: 36%">
+	<table>
+		<tr>
+			<td>Health Status: </td>
+			<td>
+				<input asp-for="Health" placeholder="Health Status" class="validate" disabled />
+			</td>
+			@if (Context.Session.GetInt32(Login.USERROLETYPE) <= (int)UserRoleType.Admin)
+			{
+				<td>
+					<a id="EditGymStatus" href="@Url.Action("CommonAmenitiesStatusEdit", "Amenities", new {id = (int)Model.AmenityType})" class="btn-floating waves-effect waves-light"><i class="material-icons left">edit</i>Edit</a>
+				</td>
+			}
+		</tr>
+		<tr>
+			<td>Last Maintenance Check: </td>
+			<td>
+				<input asp-for="LastMaintenanceCheck" placeholder="Last Maintenance Check" class="validate" disabled />
+			</td>
+		</tr>
+	</table>
+</div>

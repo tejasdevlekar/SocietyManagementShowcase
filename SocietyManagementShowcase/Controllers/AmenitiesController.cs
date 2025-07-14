@@ -123,6 +123,11 @@ namespace SocietyManagementShowcase.Controllers
                             return BadRequest();
                         break;
                     case AmenityType.CommonAmenitiesMen:
+                        bool isAmenityMenSuccess = await _amenitiesRepo.UpdateAmenityInfoAsync(AmenityType.CommonAmenitiesMen, value);
+                        if (isAmenityMenSuccess)
+                            return Ok();
+                        else
+                            return BadRequest();
                         break;
                     case AmenityType.CommonAmenitiesWomen:
                         break;
