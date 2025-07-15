@@ -322,6 +322,18 @@ namespace SocietyManagementUI.Controllers
                         return View(maintenanceLogs);
                         break;
                     case MaintenanceLogType.CommonAmenitiesMen:
+                        maintenanceLogs = await _maintenanceLogService
+                   .GetMaintenanceLogsAsync(MaintenanceLogType.CommonAmenitiesMen, lastId);
+                        if (maintenanceLogs == null)
+                            maintenanceLogs = new List<MaintenanceLog>();
+                        return View(maintenanceLogs);
+                        break;
+                    case MaintenanceLogType.CommonAmenitiesWomen:
+                        maintenanceLogs = await _maintenanceLogService
+                   .GetMaintenanceLogsAsync(MaintenanceLogType.CommonAmenitiesWomen, lastId);
+                        if (maintenanceLogs == null)
+                            maintenanceLogs = new List<MaintenanceLog>();
+                        return View(maintenanceLogs);
                         break;
                     default:
                         break;
@@ -402,6 +414,28 @@ namespace SocietyManagementUI.Controllers
                             return RedirectToAction("Error", "Home");
                         break;
                     case MaintenanceLogType.CommonAmenitiesMen:
+                        bool isSuccessAmenitiesMen = await _maintenanceLogService
+                                    .PostMaintenanceLogsAsync(MaintenanceLogType.CommonAmenitiesMen, log);
+                        if (isSuccessAmenitiesMen)
+                            return RedirectToAction("GenericMaintenanceLog", "Amenities", new
+                            {
+                                id = 0,
+                                type = (int)logType
+                            });
+                        else
+                            return RedirectToAction("Error", "Home");
+                        break;
+                    case MaintenanceLogType.CommonAmenitiesWomen:
+                        bool isSuccessAmenitiesWomen = await _maintenanceLogService
+                                    .PostMaintenanceLogsAsync(MaintenanceLogType.CommonAmenitiesWomen, log);
+                        if (isSuccessAmenitiesWomen)
+                            return RedirectToAction("GenericMaintenanceLog", "Amenities", new
+                            {
+                                id = 0,
+                                type = (int)logType
+                            });
+                        else
+                            return RedirectToAction("Error", "Home");
                         break;
                     default:
                         break;

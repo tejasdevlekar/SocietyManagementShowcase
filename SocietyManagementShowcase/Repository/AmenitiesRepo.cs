@@ -121,7 +121,29 @@ namespace SocietyManagementShowcase.Repository
                         }
                         break;
                     case AmenityType.CommonAmenitiesWomen:
-                        return null; //temp change later
+                        using (_efCoreDbContext)
+                        {
+                            int latestId = _efCoreDbContext.CommonAmenities
+                            .Where(a => a.AmenityType == AmenityType.CommonAmenitiesWomen)
+                            .Include(x => x.MaintenaceLog)
+                            .AsNoTracking()
+                            .FirstOrDefault().MaintenaceLog.LastOrDefault().Id;
+
+                            CommonAmenities amenityWomen = await _efCoreDbContext.CommonAmenities
+                                .Where(x => x.AmenityType == AmenityType.CommonAmenitiesWomen)
+                                .Include(a => a.MaintenaceLog
+                                .Where(b => b.Id == latestId))
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+
+                            amenityWomen.LastMaintenanceCheck = amenityWomen.MaintenaceLog.LastOrDefault().DateAndTime;
+
+                            AmenitiesResponse response = new AmenitiesResponse();
+                            response.Type = AmenityType.CommonAmenitiesWomen;
+                            response.Amenity = amenityWomen;
+                            return response;
+
+                        }
                         break;
                     default:
                         return null;
@@ -207,7 +229,20 @@ namespace SocietyManagementShowcase.Repository
                         }
                         break;
                     case AmenityType.CommonAmenitiesWomen:
-                        return false;
+                        using (_efCoreDbContext)
+                        {
+                            CommonAmenities retrievedAmenity = await _efCoreDbContext.CommonAmenities
+                                .Where(x => x.AmenityType == AmenityType.CommonAmenitiesWomen)
+                                .FirstOrDefaultAsync();
+                            CommonAmenities postedAmenity = JsonSerializer.Deserialize<CommonAmenities>(response.Amenity.ToString());
+                            if (retrievedAmenity != null)
+                            {
+                                retrievedAmenity.Health = postedAmenity.Health;
+                                await _efCoreDbContext.SaveChangesAsync();
+                                return true;
+                            }
+                            else return false;
+                        }
                         break;
                     default:
                         return false;

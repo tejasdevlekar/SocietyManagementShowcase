@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SocietyManagementShowcase.Common;
 using SocietyManagementShowcase.IRepository;
 using Common.Models;
+using Common.Common;
 
 namespace SocietyManagementShowcase.Repository
 {
@@ -92,7 +93,50 @@ namespace SocietyManagementShowcase.Repository
                             return poolOutdoor.MaintenaceLog;
                             break;
                         case MaintenanceLogType.CommonAmenitiesMen:
-                            return null; //change later
+                            if (lastId == 0)
+                            {
+                                lastId = _efCoreDbContext.MaintenanceLog
+                                        .Where(x => x.LogType == MaintenanceLogType.CommonAmenitiesMen)
+                                        .OrderByDescending(x => x.Id)
+                                        .AsNoTracking()
+                                        .FirstOrDefault()
+                                        .Id;
+                            }
+
+
+                            CommonAmenities amenitiesMen = await _efCoreDbContext.CommonAmenities
+                                .Where(a => a.AmenityType == AmenityType.CommonAmenitiesMen)
+                                .Include(
+                                    x => x.MaintenaceLog.OrderByDescending(y => y.Id)
+                                    .Where(p => p.Id <= lastId)
+                                    .Take(5)
+                                )
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+                            return amenitiesMen.MaintenaceLog;
+                            break;
+                        case MaintenanceLogType.CommonAmenitiesWomen:
+                            if (lastId == 0)
+                            {
+                                lastId = _efCoreDbContext.MaintenanceLog
+                                        .Where(x => x.LogType == MaintenanceLogType.CommonAmenitiesWomen)
+                                        .OrderByDescending(x => x.Id)
+                                        .AsNoTracking()
+                                        .FirstOrDefault()
+                                        .Id;
+                            }
+
+
+                            CommonAmenities amenitiesWomen = await _efCoreDbContext.CommonAmenities
+                                .Where(a => a.AmenityType == AmenityType.CommonAmenitiesWomen)
+                                .Include(
+                                    x => x.MaintenaceLog.OrderByDescending(y => y.Id)
+                                    .Where(p => p.Id <= lastId)
+                                    .Take(5)
+                                )
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+                            return amenitiesWomen.MaintenaceLog;
                             break;
                         default:
                             return null; //change later
@@ -150,6 +194,26 @@ namespace SocietyManagementShowcase.Repository
                             return true;
                             break;
                         case MaintenanceLogType.CommonAmenitiesMen:
+                            CommonAmenities retrievedAmenitiesMen = await _efCoreDbContext.CommonAmenities
+                                .Where(a => a.AmenityType == AmenityType.CommonAmenitiesMen)
+                                .Include(x => x.MaintenaceLog)
+                                .FirstOrDefaultAsync();
+
+                            retrievedAmenitiesMen.MaintenaceLog.Add(log);
+                            await _efCoreDbContext.SaveChangesAsync();
+                            
+                            return true;
+                            break;
+                        case MaintenanceLogType.CommonAmenitiesWomen:
+                            CommonAmenities retrievedAmenitiesWomen = await _efCoreDbContext.CommonAmenities
+                                .Where(a => a.AmenityType == AmenityType.CommonAmenitiesWomen)
+                                .Include(x => x.MaintenaceLog)
+                                .FirstOrDefaultAsync();
+
+                            retrievedAmenitiesWomen.MaintenaceLog.Add(log);
+                            await _efCoreDbContext.SaveChangesAsync();
+
+                            return true;
                             break;
                         default:
                             break;
