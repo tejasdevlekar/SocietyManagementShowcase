@@ -1,0 +1,39 @@
+﻿@using Common.Models
+@using SocietyManagementUI.Common
+@model Common.Models.SwimmingPool;
+
+@* <nav>
+    <div class="nav-wrapper red accent-3 z-depth-2">
+        <a href="#" class="center brand-logo">Swimming Pool</a>
+    </div>
+</nav> *@
+<h1 align="center" style="font-family: Palace Script MT;font-size: 87px;color: #6a6a6a;">
+    Swimming Pool @Model.PoolType.ToString()
+</h1>
+
+<br />
+<br />
+<div align="left" style="width: 36%">
+    <table>
+        <tr>
+            <td>Health Status: </td>
+            <td>
+                <input asp-for="Health" placeholder="Health Status" class="validate" disabled />
+            </td>
+            @if (Context.Session.GetInt32(Login.USERROLETYPE) <= (int)UserRoleType.Admin)
+            {
+                <td>
+                    <a id="EditSwimmingPoolStatus" href="@Url.Action("SwimmingPoolActionEdit", "Amenities", new {id = (int)Model.PoolType})" class="btn-floating waves-effect waves-light"><i class="material-icons left">edit</i>Edit</a>
+                </td>
+            }
+        </tr>
+        <tr>
+            <td>Last Maintenance Check: </td>
+            <td>
+                <input asp-for="LastMaintenanceCheck" placeholder="Last Maintenance Check" class="validate" disabled />
+            </td>
+        </tr>
+    </table>
+</div>
+
+<a href="/Amenities/GenericMaintenanceLog/0?type=@((int)Model.AmenityType)" class="waves-effect waves-light btn">Maintenance Log</a>

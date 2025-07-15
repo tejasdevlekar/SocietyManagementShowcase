@@ -1,4 +1,4 @@
-﻿namespace SocietyManagementShowcase.Models
+﻿namespace Common.Models
 {
     public class MaintenanceLog
     {
@@ -14,7 +14,9 @@
     public enum MaintenanceLogType
     {
         Gym = 0,
-        SwimmingPool,
-        CommonAmenities
+        SwimmingPoolIndoor,
+        SwimmingPoolOutdoor,
+        CommonAmenitiesMen,
+        CommonAmenitiesWomen
     }
 }

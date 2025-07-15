@@ -3,7 +3,8 @@ using Common;
 using Microsoft.EntityFrameworkCore;
 using SocietyManagementShowcase.Common;
 using SocietyManagementShowcase.IRepository;
-using SocietyManagementShowcase.Models;
+using Common.Models;
+using Common.Common;
 
 namespace SocietyManagementShowcase.Repository
 {
@@ -18,7 +19,7 @@ namespace SocietyManagementShowcase.Repository
             _logger = logger;
         }
 
-        public async Task<Gym> GetAmenityInfoAsync(AmenityType type)
+        public async Task<AmenitiesResponse> GetAmenityInfoAsync(AmenityType type)
         {
             try
             {
@@ -28,32 +29,121 @@ namespace SocietyManagementShowcase.Repository
                         using (_efCoreDbContext)
                         {
                             int latestId = _efCoreDbContext.Gym
-                                .Include(x => x.GymMaintenaceLog)
+                                .Include(x => x.MaintenaceLog)
                                 .AsNoTracking()
-                                .FirstOrDefault().GymMaintenaceLog.LastOrDefault().Id;
+                                .FirstOrDefault().MaintenaceLog.LastOrDefault().Id;
 
 
                             Gym gym = await _efCoreDbContext.Gym
-                                    .Include(x => x.GymMaintenaceLog
+                                    .Include(x => x.MaintenaceLog
                                     .Where(y => y.Id == latestId))
                                     .AsNoTracking()
                                     .FirstOrDefaultAsync();
-                            gym.LastMaintenanceCheck = gym.GymMaintenaceLog.LastOrDefault().DateAndTime;
+                            gym.LastMaintenanceCheck = gym.MaintenaceLog.LastOrDefault().DateAndTime;
 
-                            return gym;
+                            AmenitiesResponse response = new AmenitiesResponse();
+                            response.Type = AmenityType.Gym;
+                            response.Amenity = gym;
+                            return response;
+                        }
+                        break;
+                    case AmenityType.SwimmingPoolIndoor:
+                        using (_efCoreDbContext)
+                        {
+                            int latestId = _efCoreDbContext.SwimmingPool
+                                .Where(a => a.PoolType == SwimmingPoolType.Indoor)
+                                .Include(x => x.MaintenaceLog)
+                                .AsNoTracking()
+                                .FirstOrDefault().MaintenaceLog.LastOrDefault().Id;
+
+                            SwimmingPool pool = await _efCoreDbContext.SwimmingPool
+                                .Where(x => x.PoolType == SwimmingPoolType.Indoor)
+                                .Include(a => a.MaintenaceLog
+                                .Where(b => b.Id == latestId))
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+                            pool.LastMaintenanceCheck = pool.MaintenaceLog.LastOrDefault().DateAndTime;
+
+                            AmenitiesResponse response = new AmenitiesResponse();
+                            response.Type = AmenityType.SwimmingPoolIndoor;
+                            response.Amenity = pool;
+                            return response;
                         }
                         break;
                     case AmenityType.SwimmingPoolOutdoor:
-                        return null; //temp change later
-                        break;
-                    case AmenityType.SwimmingPoolIndoor:
-                        return null; //temp change later
+                        using (_efCoreDbContext)
+                        {
+                                int latestId = _efCoreDbContext.SwimmingPool
+                                .Where(a => a.PoolType == SwimmingPoolType.Outdoor)
+                                .Include(x => x.MaintenaceLog)
+                                .AsNoTracking()
+                                .FirstOrDefault().MaintenaceLog.LastOrDefault().Id;
+
+                            SwimmingPool pool = await _efCoreDbContext.SwimmingPool
+                                .Where(x => x.PoolType == SwimmingPoolType.Outdoor)
+                                .Include(a => a.MaintenaceLog
+                                .Where(b => b.Id == latestId))
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+
+                            pool.LastMaintenanceCheck = pool.MaintenaceLog.LastOrDefault().DateAndTime;
+                           
+                            AmenitiesResponse response = new AmenitiesResponse();
+                            response.Type = AmenityType.SwimmingPoolIndoor;
+                            response.Amenity = pool;
+                            return response;
+
+                        }
                         break;
                     case AmenityType.CommonAmenitiesMen:
-                        return null; //temp change later
+                        using (_efCoreDbContext)
+                        {
+                            int latestId = _efCoreDbContext.CommonAmenities
+                            .Where(a => a.AmenityType == AmenityType.CommonAmenitiesMen)
+                            .Include(x => x.MaintenaceLog)
+                            .AsNoTracking()
+                            .FirstOrDefault().MaintenaceLog.LastOrDefault().Id;
+
+                            CommonAmenities amenityMen = await _efCoreDbContext.CommonAmenities
+                                .Where(x => x.AmenityType == AmenityType.CommonAmenitiesMen)
+                                .Include(a => a.MaintenaceLog
+                                .Where(b => b.Id == latestId))
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+
+                            amenityMen.LastMaintenanceCheck = amenityMen.MaintenaceLog.LastOrDefault().DateAndTime;
+
+                            AmenitiesResponse response = new AmenitiesResponse();
+                            response.Type = AmenityType.CommonAmenitiesMen;
+                            response.Amenity = amenityMen;
+                            return response;
+
+                        }
                         break;
                     case AmenityType.CommonAmenitiesWomen:
-                        return null; //temp change later
+                        using (_efCoreDbContext)
+                        {
+                            int latestId = _efCoreDbContext.CommonAmenities
+                            .Where(a => a.AmenityType == AmenityType.CommonAmenitiesWomen)
+                            .Include(x => x.MaintenaceLog)
+                            .AsNoTracking()
+                            .FirstOrDefault().MaintenaceLog.LastOrDefault().Id;
+
+                            CommonAmenities amenityWomen = await _efCoreDbContext.CommonAmenities
+                                .Where(x => x.AmenityType == AmenityType.CommonAmenitiesWomen)
+                                .Include(a => a.MaintenaceLog
+                                .Where(b => b.Id == latestId))
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+
+                            amenityWomen.LastMaintenanceCheck = amenityWomen.MaintenaceLog.LastOrDefault().DateAndTime;
+
+                            AmenitiesResponse response = new AmenitiesResponse();
+                            response.Type = AmenityType.CommonAmenitiesWomen;
+                            response.Amenity = amenityWomen;
+                            return response;
+
+                        }
                         break;
                     default:
                         return null;
@@ -68,7 +158,7 @@ namespace SocietyManagementShowcase.Repository
         }
 
 
-        public async Task<bool> UpdateAmenityInfoAsync(AmenityType type, AmenitiesResponse  response)
+        public async Task<bool> UpdateAmenityInfoAsync(AmenityType type, AmenitiesResponse response)
         {
             try
             {
@@ -88,17 +178,71 @@ namespace SocietyManagementShowcase.Repository
                             else return false;
                         }
                         break;
-                    case AmenityType.SwimmingPoolOutdoor:
+                    case AmenityType.SwimmingPoolIndoor:
+                        using (_efCoreDbContext)
+                        {
+                            SwimmingPool retrievedPool = await _efCoreDbContext.SwimmingPool
+                                .Where(x => x.PoolType == SwimmingPoolType.Indoor)
+                                .FirstOrDefaultAsync();
+                            SwimmingPool postedPool = JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
+                            if (retrievedPool != null)
+                            {
+                                retrievedPool.Health = postedPool.Health;
+                                await _efCoreDbContext.SaveChangesAsync();
+                                return true;
+                            }
+                            else return false;
+                        }
                         return false;
                         break;
-                    case AmenityType.SwimmingPoolIndoor:
+                    case AmenityType.SwimmingPoolOutdoor:
+                        using(_efCoreDbContext)
+                        {
+                            SwimmingPool retrievedPool = await _efCoreDbContext.SwimmingPool
+                                .Where(x => x.PoolType == SwimmingPoolType.Outdoor)
+                                .FirstOrDefaultAsync();
+                            SwimmingPool postedPool = JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
+                            if (retrievedPool != null)
+                            {
+                                retrievedPool.Health = postedPool.Health;
+                                await _efCoreDbContext.SaveChangesAsync();
+                                return true;
+                            }
+                            else return false;
+                        }
                         return false;
                         break;
                     case AmenityType.CommonAmenitiesMen:
-                        return false;
+                        using (_efCoreDbContext)
+                        {
+                            CommonAmenities retrievedAmenity = await _efCoreDbContext.CommonAmenities
+                                .Where(x => x.AmenityType == AmenityType.CommonAmenitiesMen)
+                                .FirstOrDefaultAsync();
+                            CommonAmenities postedAmenity = JsonSerializer.Deserialize<CommonAmenities>(response.Amenity.ToString());
+                            if (retrievedAmenity != null)
+                            {
+                                retrievedAmenity.Health = postedAmenity.Health;
+                                await _efCoreDbContext.SaveChangesAsync();
+                                return true;
+                            }
+                            else return false;
+                        }
                         break;
                     case AmenityType.CommonAmenitiesWomen:
-                        return false;
+                        using (_efCoreDbContext)
+                        {
+                            CommonAmenities retrievedAmenity = await _efCoreDbContext.CommonAmenities
+                                .Where(x => x.AmenityType == AmenityType.CommonAmenitiesWomen)
+                                .FirstOrDefaultAsync();
+                            CommonAmenities postedAmenity = JsonSerializer.Deserialize<CommonAmenities>(response.Amenity.ToString());
+                            if (retrievedAmenity != null)
+                            {
+                                retrievedAmenity.Health = postedAmenity.Health;
+                                await _efCoreDbContext.SaveChangesAsync();
+                                return true;
+                            }
+                            else return false;
+                        }
                         break;
                     default:
                         return false;

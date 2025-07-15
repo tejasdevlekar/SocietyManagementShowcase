@@ -6,8 +6,9 @@ using Common;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.IRepository;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Common.Common;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,28 +35,24 @@ namespace SocietyManagementShowcase.Controllers
         //}
 
         // GET api/<AmenitiesController>/5
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> Get(AmenityType type)
         {
             try
             {
-                AmenitiesResponse response = new AmenitiesResponse();
-                Gym gym = await _amenitiesRepo.GetAmenityInfoAsync(type);
-                if (gym != null)
+                AmenitiesResponse response = await _amenitiesRepo.GetAmenityInfoAsync(type);
+                if (response != null)
                 {
-                    response.Type = AmenityType.Gym;
-                    response.Amenity = gym;
-                    return new ObjectResult(JsonSerializer.Serialize(response));
+                    return new OkObjectResult(JsonSerializer.Serialize(response));
                 }
                 else
                 {
                     var errorResponse = new HttpResponseMessage(HttpStatusCode.BadRequest)
                     {
-                        Content = new StringContent(JsonSerializer.Serialize(gym), Encoding.UTF8, "application/json"),
                         ReasonPhrase = "Gym not found"
                     };
 
-                    return new ObjectResult(errorResponse);
+                    return new NotFoundObjectResult(errorResponse);
                 }
             }
             catch (Exception ex)
@@ -111,13 +108,33 @@ namespace SocietyManagementShowcase.Controllers
                         else
                             return BadRequest();
                             break;
-                    case AmenityType.SwimmingPoolOutdoor:
-                        break;
                     case AmenityType.SwimmingPoolIndoor:
+                        bool isIndoorSuccess = await _amenitiesRepo.UpdateAmenityInfoAsync(AmenityType.SwimmingPoolIndoor, value);
+                        if (isIndoorSuccess)
+                            return Ok();
+                        else
+                            return BadRequest();
+                        break;
+                    case AmenityType.SwimmingPoolOutdoor:
+                        bool isOutdoorSuccess = await _amenitiesRepo.UpdateAmenityInfoAsync(AmenityType.SwimmingPoolOutdoor, value);
+                        if (isOutdoorSuccess)
+                            return Ok();
+                        else
+                            return BadRequest();
                         break;
                     case AmenityType.CommonAmenitiesMen:
+                        bool isAmenityMenSuccess = await _amenitiesRepo.UpdateAmenityInfoAsync(AmenityType.CommonAmenitiesMen, value);
+                        if (isAmenityMenSuccess)
+                            return Ok();
+                        else
+                            return BadRequest();
                         break;
                     case AmenityType.CommonAmenitiesWomen:
+                        bool isAmenityWomenSuccess = await _amenitiesRepo.UpdateAmenityInfoAsync(AmenityType.CommonAmenitiesWomen, value);
+                        if (isAmenityWomenSuccess)
+                            return Ok();
+                        else
+                            return BadRequest();
                         break;
                     default:
                         break;

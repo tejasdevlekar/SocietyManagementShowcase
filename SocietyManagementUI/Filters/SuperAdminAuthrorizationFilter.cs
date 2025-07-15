@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 using SocietyManagementUI.Common;
 
 namespace SocietyManagementUI.Filters

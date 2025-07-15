@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using SocietyManagementShowcase.Common;
 using SocietyManagementShowcase.IRepository;
-using SocietyManagementShowcase.Models;
+using Common.Models;
+using Common.Common;
 
 namespace SocietyManagementShowcase.Repository
 {
@@ -29,6 +30,7 @@ namespace SocietyManagementShowcase.Repository
                             if (lastId == 0)
                             {
                                 lastId = _efCoreDbContext.MaintenanceLog
+                                        .Where(x => x.LogType == MaintenanceLogType.Gym)
                                         .OrderByDescending(x => x.Id)
                                         .AsNoTracking()
                                         .FirstOrDefault()
@@ -36,19 +38,105 @@ namespace SocietyManagementShowcase.Repository
                             }
                             Gym gym = await _efCoreDbContext.Gym
                                 .Include(
-                                    x => x.GymMaintenaceLog.OrderByDescending(y => y.Id)
+                                    x => x.MaintenaceLog.OrderByDescending(y => y.Id)
                                     .Where(p => p.Id <= lastId)
                                     .Take(5)
                                 )
                                 .AsNoTracking()
                                 .FirstOrDefaultAsync(); //Since there's only 1 Gym
-                            return gym.GymMaintenaceLog;
+                            return gym.MaintenaceLog;
                             break;
-                        case MaintenanceLogType.SwimmingPool:
-                            return null; //change later
+                        case MaintenanceLogType.SwimmingPoolIndoor:
+                            if (lastId == 0)
+                            {
+                                lastId = _efCoreDbContext.MaintenanceLog
+                                        .Where(x => x.LogType == MaintenanceLogType.SwimmingPoolIndoor)
+                                        .OrderByDescending(x => x.Id)
+                                        .AsNoTracking()
+                                        .FirstOrDefault()
+                                        .Id;
+                            }
+
+
+                            SwimmingPool pool = await _efCoreDbContext.SwimmingPool
+                                .Where(a => a.PoolType == SwimmingPoolType.Indoor)
+                                .Include(
+                                    x => x.MaintenaceLog.OrderByDescending(y => y.Id)
+                                    .Where(p => p.Id <= lastId)
+                                    .Take(5)
+                                )
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+                            return pool.MaintenaceLog;
                             break;
-                        case MaintenanceLogType.CommonAmenities:
-                            return null; //change later
+                        case MaintenanceLogType.SwimmingPoolOutdoor:
+                            if (lastId == 0)
+                            {
+                                lastId = _efCoreDbContext.MaintenanceLog
+                                        .Where(x => x.LogType == MaintenanceLogType.SwimmingPoolOutdoor)
+                                        .OrderByDescending(x => x.Id)
+                                        .AsNoTracking()
+                                        .FirstOrDefault()
+                                        .Id;
+                            }
+
+
+                            SwimmingPool poolOutdoor = await _efCoreDbContext.SwimmingPool
+                                .Where(a => a.PoolType == SwimmingPoolType.Outdoor)
+                                .Include(
+                                    x => x.MaintenaceLog.OrderByDescending(y => y.Id)
+                                    .Where(p => p.Id <= lastId)
+                                    .Take(5)
+                                )
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+                            return poolOutdoor.MaintenaceLog;
+                            break;
+                        case MaintenanceLogType.CommonAmenitiesMen:
+                            if (lastId == 0)
+                            {
+                                lastId = _efCoreDbContext.MaintenanceLog
+                                        .Where(x => x.LogType == MaintenanceLogType.CommonAmenitiesMen)
+                                        .OrderByDescending(x => x.Id)
+                                        .AsNoTracking()
+                                        .FirstOrDefault()
+                                        .Id;
+                            }
+
+
+                            CommonAmenities amenitiesMen = await _efCoreDbContext.CommonAmenities
+                                .Where(a => a.AmenityType == AmenityType.CommonAmenitiesMen)
+                                .Include(
+                                    x => x.MaintenaceLog.OrderByDescending(y => y.Id)
+                                    .Where(p => p.Id <= lastId)
+                                    .Take(5)
+                                )
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+                            return amenitiesMen.MaintenaceLog;
+                            break;
+                        case MaintenanceLogType.CommonAmenitiesWomen:
+                            if (lastId == 0)
+                            {
+                                lastId = _efCoreDbContext.MaintenanceLog
+                                        .Where(x => x.LogType == MaintenanceLogType.CommonAmenitiesWomen)
+                                        .OrderByDescending(x => x.Id)
+                                        .AsNoTracking()
+                                        .FirstOrDefault()
+                                        .Id;
+                            }
+
+
+                            CommonAmenities amenitiesWomen = await _efCoreDbContext.CommonAmenities
+                                .Where(a => a.AmenityType == AmenityType.CommonAmenitiesWomen)
+                                .Include(
+                                    x => x.MaintenaceLog.OrderByDescending(y => y.Id)
+                                    .Where(p => p.Id <= lastId)
+                                    .Take(5)
+                                )
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+                            return amenitiesWomen.MaintenaceLog;
                             break;
                         default:
                             return null; //change later
@@ -73,18 +161,59 @@ namespace SocietyManagementShowcase.Repository
                     {
                         case MaintenanceLogType.Gym:
                             Gym retrivedGym = await _efCoreDbContext.Gym
-                                .Include(x => x.GymMaintenaceLog)
+                                .Include(x => x.MaintenaceLog)
                                 .FirstOrDefaultAsync();
                             if (retrivedGym == null) return false;
-                            
-                            retrivedGym.GymMaintenaceLog.Add(log);
+
+                            retrivedGym.MaintenaceLog.Add(log);
+                            await _efCoreDbContext.SaveChangesAsync();
+
+                            return true;
+                            break;
+                        case MaintenanceLogType.SwimmingPoolIndoor:
+                            SwimmingPool retrievedPool = await _efCoreDbContext.SwimmingPool
+                                .Where(a => a.PoolType == SwimmingPoolType.Indoor)
+                                .Include(x => x.MaintenaceLog)
+                                .FirstOrDefaultAsync();
+
+                            retrievedPool.MaintenaceLog.Add(log);
+                            await _efCoreDbContext.SaveChangesAsync();
+
+                            return true;
+
+                            break;
+                        case MaintenanceLogType.SwimmingPoolOutdoor:
+                            SwimmingPool retrievedPoolOutdoor = await _efCoreDbContext.SwimmingPool
+                                .Where(a => a.PoolType == SwimmingPoolType.Outdoor)
+                                .Include(x => x.MaintenaceLog)
+                                .FirstOrDefaultAsync();
+
+                            retrievedPoolOutdoor.MaintenaceLog.Add(log);
+                            await _efCoreDbContext.SaveChangesAsync();
+
+                            return true;
+                            break;
+                        case MaintenanceLogType.CommonAmenitiesMen:
+                            CommonAmenities retrievedAmenitiesMen = await _efCoreDbContext.CommonAmenities
+                                .Where(a => a.AmenityType == AmenityType.CommonAmenitiesMen)
+                                .Include(x => x.MaintenaceLog)
+                                .FirstOrDefaultAsync();
+
+                            retrievedAmenitiesMen.MaintenaceLog.Add(log);
                             await _efCoreDbContext.SaveChangesAsync();
                             
                             return true;
                             break;
-                        case MaintenanceLogType.SwimmingPool:
-                            break;
-                        case MaintenanceLogType.CommonAmenities:
+                        case MaintenanceLogType.CommonAmenitiesWomen:
+                            CommonAmenities retrievedAmenitiesWomen = await _efCoreDbContext.CommonAmenities
+                                .Where(a => a.AmenityType == AmenityType.CommonAmenitiesWomen)
+                                .Include(x => x.MaintenaceLog)
+                                .FirstOrDefaultAsync();
+
+                            retrievedAmenitiesWomen.MaintenaceLog.Add(log);
+                            await _efCoreDbContext.SaveChangesAsync();
+
+                            return true;
                             break;
                         default:
                             break;
@@ -111,7 +240,7 @@ namespace SocietyManagementShowcase.Repository
                     await _efCoreDbContext.SaveChangesAsync();
                     return true;
                 }
-            
+
             }
             catch (Exception ex)
             {

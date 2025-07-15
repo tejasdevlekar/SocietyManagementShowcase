@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Common;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace SocietyManagementUI.Api

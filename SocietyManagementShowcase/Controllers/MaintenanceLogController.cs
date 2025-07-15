@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.IRepository;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -31,7 +31,7 @@ namespace SocietyManagementShowcase.Controllers
         //}
 
         // GET api/<MaintenanceLogController>/5
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> GetMaintenanceLog(MaintenanceLogType type, int lastId)
         {
             try

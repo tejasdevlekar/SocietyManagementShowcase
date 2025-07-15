@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SocietyManagementShowcase.Models;
+using Common.Models;
 using SocietyManagementUI.Api;
 using SocietyManagementUI.Common;
 using SocietyManagementUI.Filters;

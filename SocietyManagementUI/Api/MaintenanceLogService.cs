@@ -1,7 +1,6 @@
-﻿using System.Text;
+﻿using Common.Models;
+using System.Text;
 using System.Text.Json;
-using Common;
-using SocietyManagementShowcase.Models;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace SocietyManagementUI.Api
@@ -22,7 +21,7 @@ namespace SocietyManagementUI.Api
         {
             try
             {
-                var httpResponseMessage = await _httpClient.GetAsync($"/api/MaintenanceLog/{type}?lastId={lastId}");
+                var httpResponseMessage = await _httpClient.GetAsync($"/api/MaintenanceLog/?type={type}&lastId={lastId}");
                 var jsonResponse = httpResponseMessage.Content.ReadAsStringAsync();
                 List<MaintenanceLog> maintenanceLogs = 
                     JsonSerializer.Deserialize<List<MaintenanceLog>>(jsonResponse.Result.ToString());
@@ -39,7 +38,7 @@ namespace SocietyManagementUI.Api
         {
             try
             {
-                var httpResponseMessage = await _httpClient.GetAsync($"/api/MaintenanceLog/{logType}?lastId={id}");
+                var httpResponseMessage = await _httpClient.GetAsync($"/api/MaintenanceLog/?type={logType}&lastId={id}");
                 var jsonResponse = httpResponseMessage?.Content.ReadAsStringAsync();
                 List<MaintenanceLog> maintenanceLogs =
                     JsonSerializer.Deserialize<List<MaintenanceLog>>(jsonResponse.Result.ToString());

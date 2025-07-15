@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SocietyManagementShowcase.Models;
-using SocietyManagementUI.Api;
-using Common;
-using SocietyManagementUI.Filters;
+﻿using Common;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
+using Common.Models;
+using SocietyManagementUI.Api;
+using SocietyManagementUI.Filters;
+using System.Text.Json;
+using Common.Common;
+using SocietyManagementUI.Models;
 
 namespace SocietyManagementUI.Controllers
 {
@@ -28,7 +31,8 @@ namespace SocietyManagementUI.Controllers
         {
             try
             {
-                Gym gym = await _amenitiesService.GetAmenityAsync(AmenityType.Gym);
+                AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.Gym);
+                Gym gym = JsonSerializer.Deserialize<Gym>(response.Amenity.ToString());
                 return View(gym);
             }
             catch (Exception ex)
@@ -44,7 +48,8 @@ namespace SocietyManagementUI.Controllers
         {
             try
             {
-                Gym gym = await _amenitiesService.GetAmenityAsync(AmenityType.Gym);
+                AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.Gym);
+                Gym gym = JsonSerializer.Deserialize<Gym>(response.Amenity.ToString());
                 return View(gym);
             }
             catch (Exception ex)
@@ -79,6 +84,212 @@ namespace SocietyManagementUI.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> SwimmingPoolAction(int id)
+        {
+            try
+            {
+                if(id == (int)SwimmingPoolType.Indoor)
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolIndoor);
+                    SwimmingPool pool = JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
+                    return View(pool);
+                }
+                else
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolOutdoor);
+                    SwimmingPool pool = JsonSerializer.Deserialize<SwimmingPool>(response.Amenity.ToString());
+                    return View(pool);
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [AdminAuthorizationFilter]
+        [HttpGet]
+        public async Task<IActionResult> SwimmingPoolActionEdit(int id)
+        {
+            try
+            {
+                if (id == (int)SwimmingPoolType.Indoor)
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolIndoor);
+                    SwimmingPoolActionEditViewModel pool = JsonSerializer.Deserialize<SwimmingPoolActionEditViewModel>(response.Amenity.ToString());
+                    return View(pool);
+                }
+                else
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.SwimmingPoolOutdoor);
+                    SwimmingPoolActionEditViewModel pool = JsonSerializer.Deserialize<SwimmingPoolActionEditViewModel>(response.Amenity.ToString());
+                    return View(pool);
+                }
+                    
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [AdminAuthorizationFilter]
+        [HttpPost]
+        public async Task<IActionResult> SwimmingPoolActionEdit(SwimmingPool pool)
+        {
+            try
+            {
+                if (pool.PoolType == SwimmingPoolType.Indoor)
+                {
+                    AmenitiesResponse response = new AmenitiesResponse()
+                    {
+                        Type = AmenityType.SwimmingPoolIndoor,
+                        Amenity = pool
+                    };
+
+                    bool isSuccess = await _amenitiesService.PutAmenityAsync(response);
+                    if (isSuccess)
+                        return RedirectToAction("SwimmingPoolAction", "Amenities", new { id = (int)pool.PoolType });
+                    else
+                        return RedirectToAction("Error", "Home");
+                }
+                else
+                {
+                    AmenitiesResponse response = new AmenitiesResponse()
+                    {
+                        Type = AmenityType.SwimmingPoolOutdoor,
+                        Amenity = pool
+                    };
+                    bool isSuccess = await _amenitiesService.PutAmenityAsync(response);
+                    if (isSuccess)
+                        return RedirectToAction("SwimmingPoolAction", "Amenities", new { id = (int)pool.PoolType });
+                    else
+                        return RedirectToAction("Error", "Home");
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CommonAmenitiesAction()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> CommonAmenitiesStatus(int id)
+        {
+            try
+            {
+                if (id == (int)AmenityType.CommonAmenitiesMen)
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.CommonAmenitiesMen);
+                    CommonAmenities commonAmenities = JsonSerializer.Deserialize<CommonAmenities>(response.Amenity.ToString());
+                    return View(commonAmenities);
+                }
+                else
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.CommonAmenitiesWomen);
+                    CommonAmenities commonAmenities = JsonSerializer.Deserialize<CommonAmenities>(response.Amenity.ToString());
+                    return View(commonAmenities);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [AdminAuthorizationFilter]
+        [HttpGet]
+        public async Task<IActionResult> CommonAmenitiesStatusEdit(int id)
+        {
+            try
+            {
+                if(id == (int)AmenityType.CommonAmenitiesMen)
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.CommonAmenitiesMen);
+                    CommonAmenities amenity = JsonSerializer.Deserialize<CommonAmenities>(response.Amenity.ToString());
+                    return View(amenity);
+                }
+                else
+                {
+                    AmenitiesResponse response = await _amenitiesService.GetAmenityAsync(AmenityType.CommonAmenitiesWomen);
+                    CommonAmenities amenity = JsonSerializer.Deserialize<CommonAmenities>(response.Amenity.ToString());
+                    return View(amenity);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+
+        [AdminAuthorizationFilter]
+        [HttpPost]
+        public async Task<IActionResult> CommonAmenitiesStatusEdit(CommonAmenities amenities)
+        {
+            try
+            {
+                if (amenities.AmenityType == AmenityType.CommonAmenitiesMen)
+                {
+                    AmenitiesResponse response = new AmenitiesResponse()
+                    {
+                        Type = AmenityType.CommonAmenitiesMen,
+                        Amenity = amenities
+                    };
+
+                    bool isSuccess = await _amenitiesService.PutAmenityAsync(response);
+                    if (isSuccess)
+                        return RedirectToAction("CommonAmenitiesStatus", "Amenities", 
+                            new { id = (int)AmenityType.CommonAmenitiesMen });
+                    else
+                        return RedirectToAction("Error", "Home");
+                }
+                else
+                {
+                    AmenitiesResponse response = new AmenitiesResponse()
+                    {
+                        Type = AmenityType.CommonAmenitiesWomen,
+                        Amenity = amenities
+                    };
+
+                    bool isSuccess = await _amenitiesService.PutAmenityAsync(response);
+                    if (isSuccess)
+                        return RedirectToAction("CommonAmenitiesStatus", "Amenities", 
+                            new { id = (int)AmenityType.CommonAmenitiesWomen});
+                    else
+                        return RedirectToAction("Error", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GenericMaintenanceLog(int id, MaintenanceLogType type)
         {
             try
@@ -95,9 +306,34 @@ namespace SocietyManagementUI.Controllers
                             maintenanceLogs = new List<MaintenanceLog>();
                         return View(maintenanceLogs);
                         break;
-                    case MaintenanceLogType.SwimmingPool:
+
+                    case MaintenanceLogType.SwimmingPoolIndoor:
+                        maintenanceLogs = await _maintenanceLogService
+                    .GetMaintenanceLogsAsync(MaintenanceLogType.SwimmingPoolIndoor, lastId);
+                        if (maintenanceLogs == null)
+                            maintenanceLogs = new List<MaintenanceLog>();
+                        return View(maintenanceLogs);
                         break;
-                    case MaintenanceLogType.CommonAmenities:
+                    case MaintenanceLogType.SwimmingPoolOutdoor:
+                        maintenanceLogs = await _maintenanceLogService
+                    .GetMaintenanceLogsAsync(MaintenanceLogType.SwimmingPoolOutdoor, lastId);
+                        if (maintenanceLogs == null)
+                            maintenanceLogs = new List<MaintenanceLog>();
+                        return View(maintenanceLogs);
+                        break;
+                    case MaintenanceLogType.CommonAmenitiesMen:
+                        maintenanceLogs = await _maintenanceLogService
+                   .GetMaintenanceLogsAsync(MaintenanceLogType.CommonAmenitiesMen, lastId);
+                        if (maintenanceLogs == null)
+                            maintenanceLogs = new List<MaintenanceLog>();
+                        return View(maintenanceLogs);
+                        break;
+                    case MaintenanceLogType.CommonAmenitiesWomen:
+                        maintenanceLogs = await _maintenanceLogService
+                   .GetMaintenanceLogsAsync(MaintenanceLogType.CommonAmenitiesWomen, lastId);
+                        if (maintenanceLogs == null)
+                            maintenanceLogs = new List<MaintenanceLog>();
+                        return View(maintenanceLogs);
                         break;
                     default:
                         break;
@@ -153,9 +389,53 @@ namespace SocietyManagementUI.Controllers
                         else
                             return RedirectToAction("Error", "Home");
                         break;
-                    case MaintenanceLogType.SwimmingPool:
+                    case MaintenanceLogType.SwimmingPoolIndoor:
+                        bool isSuccessIndoor = await _maintenanceLogService
+                                    .PostMaintenanceLogsAsync(MaintenanceLogType.SwimmingPoolIndoor, log);
+                        if (isSuccessIndoor)
+                            return RedirectToAction("GenericMaintenanceLog", "Amenities", new
+                            {
+                                id = 0,
+                                type = (int)logType
+                            });
+                        else
+                            return RedirectToAction("Error", "Home");
                         break;
-                    case MaintenanceLogType.CommonAmenities:
+                    case MaintenanceLogType.SwimmingPoolOutdoor:
+                        bool isSuccessOutdoor = await _maintenanceLogService
+                                    .PostMaintenanceLogsAsync(MaintenanceLogType.SwimmingPoolOutdoor, log);
+                        if (isSuccessOutdoor)
+                            return RedirectToAction("GenericMaintenanceLog", "Amenities", new
+                            {
+                                id = 0,
+                                type = (int)logType
+                            });
+                        else
+                            return RedirectToAction("Error", "Home");
+                        break;
+                    case MaintenanceLogType.CommonAmenitiesMen:
+                        bool isSuccessAmenitiesMen = await _maintenanceLogService
+                                    .PostMaintenanceLogsAsync(MaintenanceLogType.CommonAmenitiesMen, log);
+                        if (isSuccessAmenitiesMen)
+                            return RedirectToAction("GenericMaintenanceLog", "Amenities", new
+                            {
+                                id = 0,
+                                type = (int)logType
+                            });
+                        else
+                            return RedirectToAction("Error", "Home");
+                        break;
+                    case MaintenanceLogType.CommonAmenitiesWomen:
+                        bool isSuccessAmenitiesWomen = await _maintenanceLogService
+                                    .PostMaintenanceLogsAsync(MaintenanceLogType.CommonAmenitiesWomen, log);
+                        if (isSuccessAmenitiesWomen)
+                            return RedirectToAction("GenericMaintenanceLog", "Amenities", new
+                            {
+                                id = 0,
+                                type = (int)logType
+                            });
+                        else
+                            return RedirectToAction("Error", "Home");
                         break;
                     default:
                         break;

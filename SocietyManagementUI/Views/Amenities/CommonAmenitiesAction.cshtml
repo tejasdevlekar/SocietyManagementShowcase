@@ -1,0 +1,47 @@
+﻿@using Common.Common
+
+<h1 align="center" style="font-family: Palace Script MT;font-size: 109px;color: #6a6a6a;">
+    Common Amenities
+</h1>
+<hr />
+<br />
+<br />
+
+<table>
+    <tr>
+        <td>
+			<div class="row">
+				<div class="col s12 m6">
+					<div class="card">
+						<div class="card-image">
+                            <img src="~/images/commonamenitiesmen.jpg" />
+							<span class="card-title">Men's</span>
+							<a href="@Url.Action("CommonAmenitiesStatus", "Amenities", new {id = (int)AmenityType.CommonAmenitiesMen})" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">hot_tub</i></a>
+						</div>
+						<div class="card-content">
+							<b>Men's:</b>
+							<p>Manage or view common amenities for men here.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+        </td>
+		<td>
+			<div class="row">
+				<div class="col s12 m6">
+					<div class="card">
+						<div class="card-image">
+                            <img src="~/images/commonamenitieswomen.jpg" />
+							<span class="card-title">Women's</span>
+							<a href="@Url.Action("CommonAmenitiesStatus", "Amenities", new { id = (int)AmenityType.CommonAmenitiesWomen })" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">hot_tub</i></a>
+						</div>
+						<div class="card-content">
+							<b>Women's:</b>
+							<p>Manage or view common amenities for women here.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</td>
+    </tr>
+</table>

@@ -10,25 +10,126 @@
 	});
 </script>
 
-<nav>
+@* <nav>
 	<div class="nav-wrapper red accent-3 z-depth-2">
 		<a href="#" class="center brand-logo">Dashboard</a>
 	</div>
-</nav>
+</nav> *@
+<h1 align="center" style="font-family: Palace Script MT;font-size: 109px;color: #6a6a6a;">Dashboard</h1>
+<hr />
 <br />
 <br />
+<table>
+	<tr>
+		<td>
+			<div class="row">
+				<div class="col s12 m6">
+					<div class="card">
+						<div class="card-image">
+							<img src="~/images/usermanagement.jpg">
+							<span class="card-title">User management</span>
+							<a href="/User" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">assignment_ind</i></a>
+						</div>
+						<div class="card-content">
+							<b>User Management:</b>
+							<p>Manage or view your user information here.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="row">
+				<div class="col s12 m6">
+					<div class="card">
+						<div class="card-image">
+							<img src="~/images/amenities.jpg" />
+							<span class="card-title">Amenities</span>
+							<a href="@Url.Action("CommonAmenitiesAction", "Amenities")" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">hot_tub</i></a>
+						</div>
+						<div class="card-content">
+							<b>Amenities:</b>
+							<p>Manage amenities here. You can check amenity health and manage maintenance logs here.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="row" style="width: 129%">
+				<div class="col s12 m6">
+					<div class="card">
+						<div class="card-image">
+							<img src="~/images/Gym.jpg" />
+							<span class="card-title">Gym</span>
+							<a href="/Amenities/GymAction" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">directions_run</i></a>
+						</div>
+						<div class="card-content">
+							<b>Gym:</b>
+							<p>View gym health status and manange gym maintenance logs here.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="row" style="width: 107%">
+				<div class="col s12 m6">
+					<div class="card">
+						<div class="card-image">
+                            <img src="~/images/swimmingpoolindoor.jpg" />
+							<span class="card-title">Swimming Pool Indoor</span>
+							<a href="/Amenities/SwimmingPoolAction/0" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">directions_boat</i></a>
+						</div>
+						<div class="card-content">
+							<b>Swimming Pool Indoor:</b>
+							<p>Manage indoor swimming pool along with health status and maintenance logs.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="row" style="width: 119%">
+				<div class="col s12 m6">
+					<div class="card">
+						<div class="card-image">
+                            <img src="~/images/swimmingpooloutdoor.jpg" />
+							<span class="card-title">Swimming Pool Outdoor</span>
+							<a href="/Amenities/SwimmingPoolAction/1" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">directions_boat</i></a>
+						</div>
+						<div class="card-content">
+							<b>Swimming Pool Outdoor:</b>
+							<p>Manage outdoor swimming pool along with health status and maintenance logs.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
+
+@* -------OLD CODE FOR DASHBOARD MENU-------
 <a href="/User" class="waves-effect waves-light btn">User Management</a>
 
 <ul class="collapsible" id="collapsible" style="width: 52%">
 	<li>
 		<div class="collapsible-header"><i class="material-icons">hot_tub</i>Amenities</div>
 		<div class="collapsible-body">
-			<a href="/Amenities/GymAction" class="waves-effect waves-light btn pink accent-3"><i class="material-icons">fitness_center</i>
-				<span>Gym</span></a>
-				<a href="/User" class="waves-effect waves-light btn pink accent-3"><i class="material-icons">directions_boat</i>
-				<span>Swimming Pool</span></a>
-				<a href="/User" class="waves-effect waves-light btn pink accent-3"><i class="material-icons">golf_course</i>
-				<span>Common Amenities</span></a>
-			</div>
+			<a href="/Amenities/GymAction" class="waves-effect waves-light btn pink accent-3">
+				<i class="material-icons">fitness_center</i>
+				<span>Gym</span>
+			</a>
+			<a href="/User" class="waves-effect waves-light btn pink accent-3">
+				<i class="material-icons">directions_boat</i>
+				<span>Swimming Pool</span>
+			</a>
+			<a href="/User" class="waves-effect waves-light btn pink accent-3">
+				<i class="material-icons">golf_course</i>
+				<span>Common Amenities</span>
+			</a>
+		</div>
 	</li>
-</ul>
+</ul> *@
