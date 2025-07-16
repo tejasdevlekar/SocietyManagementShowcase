@@ -7,6 +7,6 @@ namespace Common.Models
         public int Id { get; set; }
         public StatusHealth Health { get; set; }
         public List<MaintenanceLog> WaterFiltrationSystemMaintenaceLog { get; set; }
-        public DateOnly LastMaintenanceCheck { get; set; }
+        public DateTime LastMaintenanceCheck { get; set; }
     }
 }
