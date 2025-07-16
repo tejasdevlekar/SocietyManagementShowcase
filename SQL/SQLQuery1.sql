@@ -7,7 +7,11 @@ select * from [dbo].[Gym]
 select *  from [dbo].[SwimmingPool]
 select * from [dbo].[CommonAmenities]
 
+select * from [dbo].[Wing]
 
+select * from [dbo].[Flat]
+
+select * from [dbo].[Person]
 select * from [dbo].[MaintenanceLog] order by id desc
 
 insert into [dbo].[MaintenanceLog]

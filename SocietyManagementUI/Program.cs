@@ -8,6 +8,7 @@ builder.Services.AddHttpClient<LoginService>();
 builder.Services.AddHttpClient<UserService>();
 builder.Services.AddHttpClient<AmenitiesService>();
 builder.Services.AddHttpClient<MaintenanceLogService>();
+builder.Services.AddHttpClient<FlatService>();
 
 
 builder.Services.AddSession(options =>
