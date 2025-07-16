@@ -5,6 +5,15 @@ using SocietyManagementShowcase.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontEndApp",
+        builder => builder.WithOrigins("https://localhost:7006")
+                          .AllowAnyMethod()
+                          .AllowAnyHeader()
+                          .AllowCredentials());
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -19,6 +28,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<IUserRepo, UserRepo>()
                 .AddScoped<IAmenitiesRepo, AmenitiesRepo>()
                 .AddScoped<IMaintenanceRepo, MaintenanceRepo>()
+                .AddScoped<IFlatRepo, FlatRepo>()
                 .AddScoped<ISeedDatabaseRepo, SeedDatabaseRepo>()
                 .AddScoped<EfCoreDbContext, EfCoreDbContext>();
 var app = builder.Build();
@@ -36,6 +46,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontEndApp");
 
 app.UseAuthorization();
 
