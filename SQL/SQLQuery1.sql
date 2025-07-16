@@ -8,9 +8,11 @@ select *  from [dbo].[SwimmingPool]
 select * from [dbo].[CommonAmenities]
 
 select * from [dbo].[Wing]
-
+select * from [dbo].[Society]
+select * from [dbo].[WaterTanks]
 select * from [dbo].[Flat]
-
+select * from [dbo].[Engine]
+select * from [dbo].[FireFightingSystems]
 select * from [dbo].[Person]
 select * from [dbo].[MaintenanceLog] order by id desc
 

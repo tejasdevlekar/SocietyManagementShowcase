@@ -9,5 +9,6 @@ namespace Common.Models
         public List<Person> Residents { get; set; }
         public float AreaSqFt { get; set; }
         public float MaintenanceCharge { get; set; }
+        public int WingId { get; set; }
     }
 }
