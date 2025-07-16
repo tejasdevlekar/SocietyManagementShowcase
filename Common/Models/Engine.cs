@@ -9,6 +9,6 @@ namespace Common.Models
         public int OilLevel { get; set; }
         public StatusHealth Health { get; set; }
         public List<MaintenanceLog> EngineMaintenaceLog { get; set; }
-        public DateOnly LastMaintenanceCheck { get; set; }
+        public DateTime LastMaintenanceCheck { get; set; }
     }
 }

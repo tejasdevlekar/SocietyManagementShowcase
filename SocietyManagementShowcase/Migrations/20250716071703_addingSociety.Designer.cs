@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocietyManagementShowcase.Common;
 
@@ -11,9 +12,11 @@ using SocietyManagementShowcase.Common;
 namespace SocietyManagementShowcase.Migrations
 {
     [DbContext(typeof(EfCoreDbContext))]
-    partial class EfCoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250716071703_addingSociety")]
+    partial class addingSociety
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,8 +120,8 @@ namespace SocietyManagementShowcase.Migrations
                     b.Property<int>("Health")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("LastMaintenanceCheck")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("LastMaintenanceCheck")
+                        .HasColumnType("date");
 
                     b.Property<int>("OilLevel")
                         .HasColumnType("int");
