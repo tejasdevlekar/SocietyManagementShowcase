@@ -10,9 +10,7 @@ namespace Common.Models
         public int WaterLevel { get; set; }
         public StatusHealth Health { get; set; }
         public List<MaintenanceLog> WaterTankMaintenaceLog { get; set; }
-        public int  WingId { get; set; }
-        public Wing  Wing { get; set; }
-        public DateOnly LastMaintenanceCheck { get; set; }
+        public DateTime LastMaintenanceCheck { get; set; }
 
     }
 
@@ -20,6 +18,7 @@ namespace Common.Models
     {
         Kitchen = 0,
         Bathroom,
-        Flush
+        Flush,
+        Fire
     }
 }
