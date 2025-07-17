@@ -1,12 +1,13 @@
-﻿@using Common.Models
-@model Common.Models.Flat;
+﻿@using Common.Common
+@using Common.Models
+@model SocietyManagementUI.Models.AddFlatViewModel;
 
 <script type="text/javascript" language="javascript">
     $(document).ready(function() {
         console.log("Add flat is ready!");
         M.AutoInit();
 
-          
+
     });
 
 
@@ -14,7 +15,8 @@
         var flatData = {
             flatNo: $('#FlatNo').val(),
             areaSqFt: $('#AreaSqFt').val(),
-            maintenanceCharge: $('#MaintenanceCharge').val()
+            maintenanceCharge: $('#MaintenanceCharge').val(),
+            wingId: parseInt($('#WingId :selected').val(),10)
         };
 
         flatData.residents = residentList;
@@ -25,16 +27,16 @@
         ajaxPost(jsonData);
     }
 
-    
+
 
     var residentList = [];
 
     function SubmitPerson(){
         var personName = $('#PersonName').val()
-        var personContact = $('#PersonContact').val()
+        var personContact = parseInt($('#PersonContact').val(),10);
         var personEmail = $('#PersonEmail').val()
         var personFlatNo = $('#PersonFlatNo').val()
-        var personRoleType = $('#PersonRoleType').val()
+        var personRoleType = parseInt($('#RoleType :selected').val(), 10);
 
 
         var Residents = {
@@ -48,9 +50,9 @@
         console.log(Residents);
         console.log(residentList);
         clearPerson();
-        
+
         $('#chips').append('<div class="chip">' + Residents.name + '</div>');
-        
+
     }
 
     function clearPerson(){
@@ -58,21 +60,25 @@
         $('#PersonContact').val('')
         $('#PersonEmail').val('')
         $('#PersonFlatNo').val('')
-        $('#PersonRoleType').val('')
+        $('#RoleType').val('')
     }
 
-    function ajaxPost(flatData){
+    function ajaxPost(jsonData){
         $.ajax({
             type: 'POST',
             url: 'https://localhost:7249/api/Flat',
-            data: JSON.stringify(flatData),
+            data: jsonData,
             contentType: 'application/json; charset=utf-8',
             success: function(response) {
                 console.log("Flat added successfully!");
                 // Optionally redirect or update UI
+                alert('Flat added successfully!' + response);
+                window.location.replace("https://localhost:7006/Flat");
             },
             error: function(error) {
                 console.error("Error adding flat:", error);
+                alert('Error adding flat!' + error);
+
             }
         });
     }
@@ -84,54 +90,68 @@
 </nav>
 
 @* <form asp-action="AddFlat" asp-controller="Flat" method="post"> *@
-    <table>
-        <tr>
-            <td>
-                Flat No:
-            </td>
-            <td>
-                <input asp-for="FlatNo" placeholder="Flat No." class="validate" />
-                <span asp-validation-for="FlatNo" class="text-danger"></span>
-            </td>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-            <td>
-                <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add Resident<i class="material-icons right">add</i></a>
-                
-            </td>
-            <td>
-                <div id="chips"></div>
-            </td>
-           
-        </tr>
+<table>
+    <tr>
+        <td>
+            Wing:
+        </td>
+        <td>
+            <select asp-for="WingId" id="WingId">
+                <option value="" disabled selected>Choose your Wing</option>
+                @foreach (var wing in Model.WingIdAndName)
+                {
+                    <option value="@wing.Id">@wing.Name</option>
+                }
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Flat No:
+        </td>
+        <td>
+            <input asp-for="FlatNo" placeholder="Flat No." class="validate" />
+            <span asp-validation-for="FlatNo" class="text-danger"></span>
+        </td>
+    </tr>
+    <tr>
+    </tr>
+    <tr>
+        <td>
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add Resident<i class="material-icons right">add</i></a>
 
-        <tr>
-            <td>Area sq ft:</td>
-            <td>
-                <input asp-for="AreaSqFt" placeholder="Area Sq.Ft." class="validate" />
-                <span asp-validation-for="AreaSqFt" class="text-danger"></span>
-            </td>
-        </tr>
-        <tr>
-            <td>Maintenance Charge:</td>
-            <td>
-                <input asp-for="MaintenanceCharge" placeholder="Maintenance Charge" class="validate" />
-                <span asp-validation-for="MaintenanceCharge" class="text-danger"></span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div align="center">
-                    <a class="btn waves-effect waves-light" onclick="setData()">
-                        Add Flat Javacript
-                        <i class="material-icons right">add</i>
-                    </a>
-                </div>
-            </td>
-        </tr>
-        @* <tr>
+        </td>
+        <td>
+            <div id="chips"></div>
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>Area sq ft:</td>
+        <td>
+            <input asp-for="AreaSqFt" placeholder="Area Sq.Ft." class="validate" />
+            <span asp-validation-for="AreaSqFt" class="text-danger"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>Maintenance Charge:</td>
+        <td>
+            <input asp-for="MaintenanceCharge" placeholder="Maintenance Charge" class="validate" />
+            <span asp-validation-for="MaintenanceCharge" class="text-danger"></span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div align="center">
+                <a class="btn waves-effect waves-light" onclick="setData()">
+                    Add Flat Javacript
+                    <i class="material-icons right">add</i>
+                </a>
+            </div>
+        </td>
+    </tr>
+    @* <tr>
             <td colspan="2">
                 <div align="center">
                     <button class="btn waves-effect waves-light" type="submit" name="action">
@@ -141,14 +161,26 @@
                 </div>
             </td>
         </tr> *@
-    </table>
+</table>
 @* </form> *@
 
 <!-- Modal Structure -->
 <div id="modal1" class="modal bottom-sheet">
     <div class="modal-content">
         <h4>Add Resident</h4>
-        <tr><td>Name:</td><td><input id="PersonName" placeholder="Wing" class="validate"></td></tr><tr><td>Contact:</td><td><input id="PersonContact" placeholder="Wing" class="validate"></td></tr><tr><td>Email:</td><td><input id="PersonEmail" placeholder="Wing" class="validate"></td></tr><tr><td>FlatNo:</td><td><input id="PersonFlatNo" placeholder="Wing" class="validate"></td></tr><tr><td>Society Role Type:</td><td><input id="PersonRoleType" placeholder="Wing" class="validate"></td></tr><tr>
+        <tr><td>Name:</td><td><input id="PersonName" placeholder="Wing" class="validate"></td></tr><tr><td>Contact:</td><td><input id="PersonContact" placeholder="Wing" class="validate"></td></tr><tr><td>Email:</td><td><input id="PersonEmail" placeholder="Wing" class="validate"></td></tr><tr><td>FlatNo:</td><td><input id="PersonFlatNo" placeholder="Wing" class="validate"></td></tr>
+        <tr>
+            <td>Society Role Type</td>
+            <td>
+                <select asp-for="RoleType" id="RoleType">
+                    <option value="" disabled selected>Choose your Role Type</option>
+                    @foreach (SocietyRoleType roleType in Enum.GetValues(typeof(SocietyRoleType)))
+                    {
+                        <option value="@((int)roleType)">@roleType.ToString()</option>
+                    }
+                </select>
+            </td>
+        </tr>
     </div>
     <div class="modal-footer">
         <a href="#!" class="modal-close waves-effect waves-green btn" onclick="SubmitPerson()">

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementUI.Api;
 using SocietyManagementUI.Filters;
+using SocietyManagementUI.Models;
 
 namespace SocietyManagementUI.Controllers
 {
@@ -10,11 +11,13 @@ namespace SocietyManagementUI.Controllers
     {
         private readonly ILogger<FlatController> _logger;
         private readonly FlatService _flatService;
+        private readonly WingService _wingService;
 
-        public FlatController(ILogger<FlatController> logger, FlatService flatService)
+        public FlatController(ILogger<FlatController> logger, FlatService flatService, WingService wingService)
         {
             _logger = logger;
             _flatService = flatService;
+            _wingService = wingService;
         }
 
         public IActionResult Index()
@@ -25,8 +28,9 @@ namespace SocietyManagementUI.Controllers
         [HttpGet]
         public async Task<IActionResult> AddFlat()
         {
-            Flat postFlat = new Flat();
+            AddFlatViewModel postFlat = new AddFlatViewModel();
             postFlat.Residents = new List<Person>();
+            postFlat.WingIdAndName = await _wingService.GetWingIdAndNameAsync();
             return View(postFlat);
         }
 
