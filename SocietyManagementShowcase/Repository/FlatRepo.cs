@@ -32,7 +32,33 @@ namespace SocietyManagementShowcase.Repository
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error adding flat");
+                _logger.LogError(ex, "Error getting flat");
+                return null;
+            }
+        }
+
+        public async Task<dynamic> GetAllFlatsAsync()
+        {
+            try
+            {
+                using (_efCoreDbContext)
+                {
+                    var flats = (from flat in _efCoreDbContext.Flat
+                                join wing in _efCoreDbContext.Wing on flat.WingId equals wing.Id
+                                select new
+                                {   FlatNo = flat.FlatNo,
+                                    AreaSqFt = flat.AreaSqFt,
+                                    MaintenanceCharge = flat.MaintenanceCharge,
+                                    WingId = flat.WingId,
+                                    WingName = wing.Name
+                                }).ToList();
+
+                    return flats;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting all flats");
                 return null;
             }
         }

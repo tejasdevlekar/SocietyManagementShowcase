@@ -1,5 +1,7 @@
 ﻿using Common.Models;
 using Microsoft.Extensions.Logging;
+using SocietyManagementUI.Models;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -18,7 +20,21 @@ namespace SocietyManagementUI.Api
             _httpClient.BaseAddress = new Uri("https://localhost:7249/");
             _logger = logger;
         }
-
+        public async Task<List<AllFlatsListViewModel>> GetAllFlatsAsync()
+        {
+            try
+            {
+                var httpResponseMessage = await _httpClient.GetAsync("/api/Flat");
+                var jsonResponse = httpResponseMessage.Content.ReadAsStringAsync();
+                List<AllFlatsListViewModel> allflats = JsonSerializer.Deserialize<List<AllFlatsListViewModel>>(jsonResponse.Result.ToString());
+                return allflats;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return new List<AllFlatsListViewModel>();
+            }
+        }
         public async Task<bool> AddFlatAsync(Flat flat)
         {
             try

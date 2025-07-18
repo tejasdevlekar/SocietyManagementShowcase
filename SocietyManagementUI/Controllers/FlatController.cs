@@ -26,12 +26,35 @@ namespace SocietyManagementUI.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> AllFlatsList()
+        {
+            try
+            {
+                List<AllFlatsListViewModel> allFlats = (List<AllFlatsListViewModel>) await _flatService.GetAllFlatsAsync();
+                return View(allFlats);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpGet]
         public async Task<IActionResult> AddFlat()
         {
-            AddFlatViewModel postFlat = new AddFlatViewModel();
-            postFlat.Residents = new List<Person>();
-            postFlat.WingIdAndName = await _wingService.GetWingIdAndNameAsync();
-            return View(postFlat);
+            try
+            {
+                AddFlatViewModel postFlat = new AddFlatViewModel();
+                postFlat.Residents = new List<Person>();
+                postFlat.WingIdAndName = await _wingService.GetWingIdAndNameAsync();
+                return View(postFlat);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         [HttpPost]

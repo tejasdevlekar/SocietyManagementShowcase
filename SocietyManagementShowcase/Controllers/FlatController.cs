@@ -21,9 +21,23 @@ namespace SocietyManagementShowcase.Controllers
         }
         // GET: api/<FlatController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var flats = await _flatRepo.GetAllFlatsAsync();
+                return Ok(JsonSerializer.Serialize(flats));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+
+                var errorResponse = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    ReasonPhrase = "An error occurred"
+                };
+                return new BadRequestObjectResult(errorResponse);
+            }
         }
 
         // GET api/<FlatController>/5
