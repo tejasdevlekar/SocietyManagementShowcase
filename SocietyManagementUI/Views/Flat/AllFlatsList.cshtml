@@ -39,6 +39,15 @@
                 </td>
             </tr>
         }
+
+        <tr>
+            <td colspan="6">
+                <div align="center">
+                    <a href="/Flat/AllFlatsList/@(Model.FirstOrDefault().Id - 5)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_left</i></a>
+                    <a href="/Flat/AllFlatsList/@(Model.LastOrDefault().Id + 1)" class="waves-effect waves-teal btn-flat"><i class="material-icons center">chevron_right</i></a>
+                </div>
+            </td>
+        </tr>
     }
 </table>
 

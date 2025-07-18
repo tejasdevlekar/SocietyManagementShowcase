@@ -6,7 +6,7 @@ namespace SocietyManagementShowcase.IRepository
     public interface IFlatRepo
     {
         Task<Flat> GetFlatAsync(int id);
-        Task<dynamic> GetAllFlatsAsync();
+        Task<dynamic> GetAllFlatsAsync(int lastId);
         Task<bool> AddFlatAsync(Flat flat);
     }
 }

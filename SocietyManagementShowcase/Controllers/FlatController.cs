@@ -21,11 +21,11 @@ namespace SocietyManagementShowcase.Controllers
         }
         // GET: api/<FlatController>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(string lastId)
         {
             try
             {
-                var flats = await _flatRepo.GetAllFlatsAsync();
+                var flats = await _flatRepo.GetAllFlatsAsync(Convert.ToInt32(lastId));
                 return Ok(JsonSerializer.Serialize(flats));
             }
             catch (Exception ex)

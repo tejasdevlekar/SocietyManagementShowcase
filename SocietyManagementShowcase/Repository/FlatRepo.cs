@@ -37,21 +37,27 @@ namespace SocietyManagementShowcase.Repository
             }
         }
 
-        public async Task<dynamic> GetAllFlatsAsync()
+        public async Task<dynamic> GetAllFlatsAsync(int lastId)
         {
             try
             {
                 using (_efCoreDbContext)
                 {
+                    if(lastId <= 0){
+                        lastId = int.MinValue;
+                    }
                     var flats = (from flat in _efCoreDbContext.Flat
                                 join wing in _efCoreDbContext.Wing on flat.WingId equals wing.Id
-                                select new
-                                {   FlatNo = flat.FlatNo,
+                                where flat.Id >= lastId
+                                 select new
+                                {   
+                                    Id = flat.Id,
+                                    FlatNo = flat.FlatNo,
                                     AreaSqFt = flat.AreaSqFt,
                                     MaintenanceCharge = flat.MaintenanceCharge,
                                     WingId = flat.WingId,
                                     WingName = wing.Name
-                                }).ToList();
+                                }).Take(5).ToList();
 
                     return flats;
                 }

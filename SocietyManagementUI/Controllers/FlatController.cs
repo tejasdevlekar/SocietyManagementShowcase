@@ -26,11 +26,11 @@ namespace SocietyManagementUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AllFlatsList()
+        public async Task<IActionResult> AllFlatsList(int id)
         {
             try
             {
-                List<AllFlatsListViewModel> allFlats = (List<AllFlatsListViewModel>) await _flatService.GetAllFlatsAsync();
+                List<AllFlatsListViewModel> allFlats = await _flatService.GetAllFlatsAsync(id);
                 return View(allFlats);
             }
             catch (Exception ex)

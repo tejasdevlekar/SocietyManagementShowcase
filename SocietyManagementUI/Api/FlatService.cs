@@ -20,11 +20,11 @@ namespace SocietyManagementUI.Api
             _httpClient.BaseAddress = new Uri("https://localhost:7249/");
             _logger = logger;
         }
-        public async Task<List<AllFlatsListViewModel>> GetAllFlatsAsync()
+        public async Task<List<AllFlatsListViewModel>> GetAllFlatsAsync(int lastId)
         {
             try
             {
-                var httpResponseMessage = await _httpClient.GetAsync("/api/Flat");
+                var httpResponseMessage = await _httpClient.GetAsync($"/api/Flat?lastId={lastId}");
                 var jsonResponse = httpResponseMessage.Content.ReadAsStringAsync();
                 List<AllFlatsListViewModel> allflats = JsonSerializer.Deserialize<List<AllFlatsListViewModel>>(jsonResponse.Result.ToString());
                 return allflats;
