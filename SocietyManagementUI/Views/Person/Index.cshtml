@@ -1,0 +1,28 @@
+﻿@using Common.Models
+@model List<Person>
+
+<h1 align="center" style="font-family: Palace Script MT;font-size: 87px;color: #6a6a6a;">
+    Person List
+</h1>
+
+<table>
+    <tr>
+        <th>Person ID</th>
+        <th>Name</th>
+        <th>Contact</th>
+        <th>Email</th>
+        <th>Flat No.</th>
+        <th>Society Role Type</th>
+    </tr>
+    @foreach (var person in Model)
+    {
+        <tr>
+            <td>@person.Id</td>
+            <td>@person.Name</td>
+            <td>@person.Contact</td>
+            <td>@person.Email</td>
+            <td>@person.FlatNo</td>
+            <td>@person.Role</td>
+        </tr>
+    }
+</table>
