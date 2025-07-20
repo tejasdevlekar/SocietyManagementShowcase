@@ -1,11 +1,14 @@
-﻿using System.Net;
-using System.Text;
-using System.Text.Json;
-using Common;
+﻿using Common;
+using Common.Common;
+using Common.Models;
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.IRepository;
-using Common.Models;
 using SocietyManagementShowcase.Repository;
+using System.Collections;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,12 +19,14 @@ namespace SocietyManagementShowcase.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IUserRepo _userRepo;
+        private readonly ISessionRepo _sessionRepo;
         private readonly ILogger<LoginController> _logger;
 
-        public LoginController(IUserRepo userRepo, ILogger<LoginController> logger)
+        public LoginController(IUserRepo userRepo, ILogger<LoginController> logger, ISessionRepo sessionRepo)
         {
             _userRepo = userRepo;
             _logger = logger;
+            _sessionRepo = sessionRepo;
         }
         // GET: api/<ValuesController>
         [HttpGet]
@@ -47,10 +52,25 @@ namespace SocietyManagementShowcase.Controllers
                 User retrivedUser = await _userRepo.VerifyUser(value);
                 if (retrivedUser != null)
                 {
+                    MySession session = new MySession(Login.USERID, retrivedUser.Username);
+                    session.Set(Login.USERROLETYPE, retrivedUser.RoleType);
+
+                    MySessionModel mySessionModel = new MySessionModel()
+                    {
+                        Id = Helper.GenerateRandomString(10),
+                        Value = session.GetSession(),
+                        ExpiresAtTime = DateTime.UtcNow.AddHours(2),
+                        SlidingExpirationInSeconds = 7200, // 2 hours
+                        AbsoluteExpiration = DateTime.UtcNow.AddHours(4)
+                    };
+
+                    await _sessionRepo.AddSession(mySessionModel);
+
+                    Response.Headers.Add(Login.SESSIONID, mySessionModel.Id);
                     LoginResponse data = new LoginResponse()
                     {
                         status = true,
-                        User = retrivedUser
+                        User = retrivedUser,
                     };
                     return new ObjectResult(JsonSerializer.Serialize(data));
                 }

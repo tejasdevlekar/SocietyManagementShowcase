@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Common.Models;
-using SocietyManagementUI.Common;
+using Common.Common;
 
 namespace SocietyManagementUI.Filters
 {

@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Common.Common;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using SocietyManagementUI.Common;
+using SocietyManagementUI.Api;
 
 namespace SocietyManagementUI.Filters
 {
     public class LoginAuthenticationFilter : Attribute, IAuthorizationFilter
     {
+        
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             if (!IsAuthorised(context))
@@ -20,7 +22,8 @@ namespace SocietyManagementUI.Filters
 
         public bool IsAuthorised(AuthorizationFilterContext context) 
         {
-            if(!String.IsNullOrWhiteSpace(context.HttpContext.Session.GetString(Login.USERNAME)))
+            
+            if (!String.IsNullOrWhiteSpace(context.HttpContext.Session.GetString(Login.USERNAME)))
                 return true;
 
             return false;

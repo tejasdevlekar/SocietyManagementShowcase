@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocietyManagementShowcase.Common;
 
@@ -11,9 +12,11 @@ using SocietyManagementShowcase.Common;
 namespace SocietyManagementShowcase.Migrations
 {
     [DbContext(typeof(EfCoreDbContext))]
-    partial class EfCoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250720055945_MySessionModel")]
+    partial class MySessionModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +45,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MySessionModel", (string)null);
+                    b.ToTable("MySessionModel");
                 });
 
             modelBuilder.Entity("Common.Models.CommonAmenities", b =>
@@ -72,7 +75,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("SocietyId");
 
-                    b.ToTable("CommonAmenities", (string)null);
+                    b.ToTable("CommonAmenities");
                 });
 
             modelBuilder.Entity("Common.Models.ElectricityGenerator", b =>
@@ -99,7 +102,7 @@ namespace SocietyManagementShowcase.Migrations
                     b.HasIndex("WingId")
                         .IsUnique();
 
-                    b.ToTable("ElectricityGenerator", (string)null);
+                    b.ToTable("ElectricityGenerator");
                 });
 
             modelBuilder.Entity("Common.Models.Elevator", b =>
@@ -123,7 +126,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("WingId");
 
-                    b.ToTable("Elevator", (string)null);
+                    b.ToTable("Elevator");
                 });
 
             modelBuilder.Entity("Common.Models.Engine", b =>
@@ -148,7 +151,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Engine", (string)null);
+                    b.ToTable("Engine");
                 });
 
             modelBuilder.Entity("Common.Models.FireFightingSystem", b =>
@@ -174,7 +177,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("FireSystemEngineId");
 
-                    b.ToTable("FireFightingSystem", (string)null);
+                    b.ToTable("FireFightingSystem");
                 });
 
             modelBuilder.Entity("Common.Models.Flat", b =>
@@ -202,7 +205,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("WingId");
 
-                    b.ToTable("Flat", (string)null);
+                    b.ToTable("Flat");
                 });
 
             modelBuilder.Entity("Common.Models.Gym", b =>
@@ -224,7 +227,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Gym", (string)null);
+                    b.ToTable("Gym");
                 });
 
             modelBuilder.Entity("Common.Models.IssueTicketLog", b =>
@@ -273,7 +276,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("WingId");
 
-                    b.ToTable("IssueTicketLog", (string)null);
+                    b.ToTable("IssueTicketLog");
                 });
 
             modelBuilder.Entity("Common.Models.MaintenanceLog", b =>
@@ -338,7 +341,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("WaterTankId");
 
-                    b.ToTable("MaintenanceLog", (string)null);
+                    b.ToTable("MaintenanceLog");
                 });
 
             modelBuilder.Entity("Common.Models.Person", b =>
@@ -379,7 +382,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("SocietyId");
 
-                    b.ToTable("Person", (string)null);
+                    b.ToTable("Person");
                 });
 
             modelBuilder.Entity("Common.Models.Society", b =>
@@ -423,7 +426,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("WaterFilterId");
 
-                    b.ToTable("Society", (string)null);
+                    b.ToTable("Society");
                 });
 
             modelBuilder.Entity("Common.Models.SwimmingPool", b =>
@@ -453,7 +456,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("SocietyId");
 
-                    b.ToTable("SwimmingPool", (string)null);
+                    b.ToTable("SwimmingPool");
                 });
 
             modelBuilder.Entity("Common.Models.User", b =>
@@ -483,7 +486,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Common.Models.VisitorLog", b =>
@@ -529,7 +532,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("WingId");
 
-                    b.ToTable("VisitorLog", (string)null);
+                    b.ToTable("VisitorLog");
                 });
 
             modelBuilder.Entity("Common.Models.WaterFiltrationSystem", b =>
@@ -548,7 +551,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WaterFiltrationSystem", (string)null);
+                    b.ToTable("WaterFiltrationSystem");
                 });
 
             modelBuilder.Entity("Common.Models.WaterTank", b =>
@@ -581,7 +584,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("WingId");
 
-                    b.ToTable("WaterTank", (string)null);
+                    b.ToTable("WaterTank");
                 });
 
             modelBuilder.Entity("Common.Models.Wing", b =>
@@ -624,7 +627,7 @@ namespace SocietyManagementShowcase.Migrations
 
                     b.HasIndex("SubManagerId");
 
-                    b.ToTable("Wing", (string)null);
+                    b.ToTable("Wing");
                 });
 
             modelBuilder.Entity("Common.Models.CommonAmenities", b =>

@@ -11,6 +11,7 @@ builder.Services.AddHttpClient<MaintenanceLogService>();
 builder.Services.AddHttpClient<FlatService>();
 builder.Services.AddHttpClient<WingService>();
 builder.Services.AddHttpClient<PersonService>();
+builder.Services.AddHttpClient<SessionService>();
 
 
 builder.Services.AddSession(options =>

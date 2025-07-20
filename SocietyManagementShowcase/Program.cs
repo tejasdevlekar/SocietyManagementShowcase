@@ -32,6 +32,7 @@ builder.Services.AddScoped<IUserRepo, UserRepo>()
                 .AddScoped<ISeedDatabaseRepo, SeedDatabaseRepo>()
                 .AddScoped<IWingRepo, WingRepo>()
                 .AddScoped<IPersonRepo, PersonRepo>()
+                .AddScoped<ISessionRepo, SessionRepo>()
                 .AddScoped<EfCoreDbContext, EfCoreDbContext>();
 var app = builder.Build();
 

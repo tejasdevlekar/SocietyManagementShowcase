@@ -1,6 +1,7 @@
 ﻿using System.Reflection.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Common.Models;
+using Common.Common;
 
 namespace SocietyManagementShowcase.Common
 {
@@ -37,6 +38,7 @@ namespace SocietyManagementShowcase.Common
         public DbSet<WaterTank> WaterTank { get; set; }
         public DbSet<FireFightingSystem> FireFightingSystem { get; set; }
         public DbSet<WaterFiltrationSystem> WaterFiltrationSystem { get; set; }
+        public DbSet<MySessionModel> MySessionModel { get; set; }
 
 
     }

@@ -1,24 +1,29 @@
-using System.Diagnostics;
 using Common;
+using Common.Common;
+using Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Common.Models;
 using SocietyManagementUI.Api;
-using SocietyManagementUI.Common;
 using SocietyManagementUI.Filters;
 using SocietyManagementUI.Models;
+using System.Collections;
+using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text.Json;
 
 namespace SocietyManagementUI.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly LoginService _loginService;
+    private readonly SessionService _sessionService;
 
 
-    public HomeController(ILogger<HomeController> logger, LoginService loginService)
+    public HomeController(ILogger<HomeController> logger, LoginService loginService, SessionService sessionService)
     {
         _logger = logger;
         _loginService = loginService;
+        _sessionService = sessionService;
     }
 
     [HttpGet]
@@ -38,6 +43,13 @@ public class HomeController : Controller
         }
 
         LoginResponse response = await _loginService.PostLoginAsync(user);
+        Response.Cookies.Append(Login.SESSIONID, response.SessionId, new CookieOptions
+        {
+            Expires = DateTimeOffset.UtcNow.AddHours(2),
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict
+        });
         if (response.status)
         {
             HttpContext.Session.SetInt32(Login.USERID, response.User.Id);
@@ -69,6 +81,9 @@ public class HomeController : Controller
     [LoginAuthenticationFilter]
     public IActionResult Dashboard()
     {
+        //verify session
+        var sessionId = HttpContext.Request.Cookies[Login.SESSIONID];
+        _sessionService.GetSessionKey(sessionId);
         return View();
     }
 
