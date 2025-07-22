@@ -1,4 +1,6 @@
-﻿using Common.Models;
+﻿using Common.Common;
+using Common.Models;
+using SocietyManagementUI.Common;
 using System.Text.Json;
 
 namespace SocietyManagementUI.Api
@@ -19,7 +21,11 @@ namespace SocietyManagementUI.Api
         {
             try
             {
+                string sessionId = CookieHelper.GetCookieValue(Login.SESSIONID);
+                _httpClient.DefaultRequestHeaders.Add(Login.SESSIONID, sessionId);
+
                 var httpResponseMessage = await _httpClient.GetAsync($"/api/Person?firstId={firstId}");
+                httpResponseMessage.EnsureSuccessStatusCode();
                 var jsonResponse = await httpResponseMessage.Content.ReadAsStringAsync();
                 List<Person> persons = JsonSerializer.Deserialize<List<Person>>(jsonResponse);
                 return persons;

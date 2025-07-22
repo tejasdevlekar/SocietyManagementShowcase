@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.Common;
 using Common.Models;
+using System.Text.Json;
 
 namespace SocietyManagementUI.Api
 {
@@ -17,11 +18,23 @@ namespace SocietyManagementUI.Api
         }
 
 
-        public async Task GetSessionKey(string sessionId)
+        public async Task<string> GetSessionKey(string sessionId)
         {
-            _httpClient.DefaultRequestHeaders.Add(Login.SESSIONID, sessionId);
-            var httpResponseMessage = await _httpClient.GetAsync($"/api/Session?sessionKey={Login.USERID}");
-            var jsonResponse = await httpResponseMessage.Content.ReadAsStringAsync();
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Add(Login.SESSIONID, sessionId);
+                var httpResponseMessage = await _httpClient.GetAsync($"/api/Session?sessionKey={Login.USERID}");
+                httpResponseMessage.EnsureSuccessStatusCode();
+                var jsonResponse = await httpResponseMessage.Content.ReadAsStringAsync();
+
+                return JsonSerializer.Deserialize<string>(jsonResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting session key.");
+                throw;
+            }
+
         }
     }
 }

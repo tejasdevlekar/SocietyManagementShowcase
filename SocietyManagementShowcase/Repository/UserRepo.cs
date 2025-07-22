@@ -45,15 +45,14 @@ namespace SocietyManagementShowcase.Repository
         {
             try
             {
-                using (_efCoreDbContext)
-                {
+                
                     User retrievedUser = _efCoreDbContext.Users.Where(x => x.Username == user.Username).FirstOrDefault();
                     if (retrievedUser != null)
                     {
                         if (user.Username == retrievedUser.Username && user.Password == retrievedUser.Password) return retrievedUser;
                         else return null;
                     }
-                }
+                
             }
             catch (Exception ex)
             {
@@ -64,12 +63,11 @@ namespace SocietyManagementShowcase.Repository
 
         public async Task<bool> AddUserAsync(User user)
         {
-            using (_efCoreDbContext)
-            {
+           
                 _efCoreDbContext.Users.Add(user);
                 _efCoreDbContext.SaveChanges();
                 return true;
-            }
+            
             return false;
         }
 
@@ -77,10 +75,9 @@ namespace SocietyManagementShowcase.Repository
         {
             List<User> users = new List<User>();
 
-            using (_efCoreDbContext)
-            {
+            
                 users = await _efCoreDbContext.Users.Where(x => !x.isDeleted).ToListAsync();
-            }
+            
             return users;
         }
 
@@ -88,11 +85,10 @@ namespace SocietyManagementShowcase.Repository
         {
             try
             {
-                using (_efCoreDbContext)
-                {
+               
                     User retrievedUser = await _efCoreDbContext.Users.FindAsync(id);
                     return retrievedUser;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -105,8 +101,7 @@ namespace SocietyManagementShowcase.Repository
         {
             try
             {
-                using (_efCoreDbContext)
-                {
+                
                     User retrievedUser = await _efCoreDbContext.Users.FindAsync(id);
                     if (retrievedUser != null)
                     {
@@ -115,7 +110,7 @@ namespace SocietyManagementShowcase.Repository
                         return true;
                     }
 
-                }
+                
             }
             catch (Exception ex)
             {
@@ -128,8 +123,7 @@ namespace SocietyManagementShowcase.Repository
         {
             try
             {
-                using (_efCoreDbContext)
-                {
+                
                     User retrievedUser = await _efCoreDbContext.Users.FindAsync(id);
                     _logger.LogInformation($"Deleting user{retrievedUser.Username}");
                     retrievedUser.isDeleted = true;
@@ -137,7 +131,7 @@ namespace SocietyManagementShowcase.Repository
                     await _efCoreDbContext.SaveChangesAsync();
                     _logger.LogInformation($"Deleted user successfully: {retrievedUser.Username}");
                     return true;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -145,5 +139,7 @@ namespace SocietyManagementShowcase.Repository
                 return false;
             }
         }
+
+
     }
 }

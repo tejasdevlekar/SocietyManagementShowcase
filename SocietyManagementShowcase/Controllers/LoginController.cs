@@ -57,11 +57,11 @@ namespace SocietyManagementShowcase.Controllers
 
                     MySessionModel mySessionModel = new MySessionModel()
                     {
-                        Id = Helper.GenerateRandomString(10),
-                        Value = session.GetSession(),
-                        ExpiresAtTime = DateTime.UtcNow.AddHours(2),
-                        SlidingExpirationInSeconds = 7200, // 2 hours
-                        AbsoluteExpiration = DateTime.UtcNow.AddHours(4)
+                        Id = Helper.GenerateRandomString(20),
+                        Value = session.GetSessionData(),
+                        ExpiresAtTime = DateTime.UtcNow.AddMinutes(20),
+                        SlidingExpirationInSeconds = 300, 
+                        AbsoluteExpiration = DateTime.UtcNow.AddMinutes(60)
                     };
 
                     await _sessionRepo.AddSession(mySessionModel);

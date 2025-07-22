@@ -1,6 +1,8 @@
 ﻿using Common.Models;
 using Microsoft.AspNetCore.Mvc;
+using SocietyManagementShowcase.Filters;
 using SocietyManagementShowcase.IRepository;
+using SocietyManagementShowcase.Repository;
 using System.Net;
 using System.Text.Json;
 
@@ -10,6 +12,7 @@ namespace SocietyManagementShowcase.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [LoginAuthenticationFilterApi]
     public class PersonController : ControllerBase
     {
         private readonly ILogger<PersonController> _logger;

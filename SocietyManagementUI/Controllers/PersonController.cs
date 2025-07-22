@@ -1,6 +1,8 @@
-﻿using Common.Models;
+﻿using Common.Common;
+using Common.Models;
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementUI.Api;
+using SocietyManagementUI.Common;
 using SocietyManagementUI.Filters;
 
 namespace SocietyManagementUI.Controllers
@@ -20,6 +22,7 @@ namespace SocietyManagementUI.Controllers
         {
             try
             {
+                CookieHelper._httpContext = HttpContext;
                 List<Person> persons = await _personService.GetAllPersonsAsync(id);
                 return View(persons);
             }

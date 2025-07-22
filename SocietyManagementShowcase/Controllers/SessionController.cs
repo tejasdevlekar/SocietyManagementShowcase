@@ -1,6 +1,8 @@
 ﻿using Common.Common;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SocietyManagementShowcase.IRepository;
+using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,19 +21,31 @@ namespace SocietyManagementShowcase.Controllers
         }
         // GET: api/<SessionController>
         [HttpGet]
-        public async Task<IEnumerable<string>> Get(string sessionKey)
+        public async Task<IActionResult> Get(string sessionKey)
         {
             Request.Headers.TryGetValue(Login.SESSIONID, out var value);
             string sessionId = value;
 
             MySessionModel sessionModel = await _sessionRepo.GetSession(sessionId);
             MySession session = new MySession();
-            session.SetSession(sessionModel.Value);
+            session.SetSessionData(sessionModel.Value);
 
             var sessionValue = session.Get(sessionKey);
 
-            return new string[] { "value1", "value2" };
+
+            return Ok(JsonSerializer.Serialize(sessionValue));
         }
+
+        //// GET: api/<SessionController>
+        //[HttpGet]
+        //public async Task<IActionResult> Get()// Unauthorised session
+        //{
+        //    var data = new { 
+        //        Message = "Unauthorised session. Please login again.",
+        //    };
+
+        //    return Unauthorized(JsonSerializer.Serialize(data));
+        //}
 
         //// GET api/<SessionController>/5
         //[HttpGet("{id}")]
@@ -53,10 +67,18 @@ namespace SocietyManagementShowcase.Controllers
         //{
         //}
 
-        //// DELETE api/<SessionController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        // DELETE api/<SessionController>/5
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+
+            var data = new
+            {
+                Message = "Unauthorised session. Please login again.",
+            };
+
+            return Unauthorized(JsonSerializer.Serialize(data));
+        }
+
     }
 }

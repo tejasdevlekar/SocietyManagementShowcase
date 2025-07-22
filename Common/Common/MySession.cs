@@ -58,13 +58,13 @@ namespace Common.Common
             }
         }
 
-        public byte[] GetSession()
+        public byte[] GetSessionData()
         {
             var serializedSession = JsonSerializer.SerializeToUtf8Bytes(_sessionData);
             return serializedSession;
         }
 
-        public void SetSession(byte[] sessionData)
+        public void SetSessionData(byte[] sessionData)
         {
             if (sessionData == null || sessionData.Length == 0)
             {

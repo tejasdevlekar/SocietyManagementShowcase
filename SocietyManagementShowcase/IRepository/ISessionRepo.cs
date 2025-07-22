@@ -6,5 +6,6 @@ namespace SocietyManagementShowcase.IRepository
     {
         Task AddSession(MySessionModel sessionModel);
         Task<MySessionModel> GetSession(string sessionId);
+        Task<bool> SetSessionAccess(MySessionModel sessionModel);
     }
 }

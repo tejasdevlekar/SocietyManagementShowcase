@@ -50,6 +50,11 @@ public class HomeController : Controller
             Secure = true,
             SameSite = SameSiteMode.Strict
         });
+
+        //verify session
+        //var sessionId = HttpContext.Request.Cookies[Login.SESSIONID];
+        //string username = await _sessionService.GetSessionKey(sessionId);
+
         if (response.status)
         {
             HttpContext.Session.SetInt32(Login.USERID, response.User.Id);
@@ -79,11 +84,9 @@ public class HomeController : Controller
     }
 
     [LoginAuthenticationFilter]
-    public IActionResult Dashboard()
+    public async Task<IActionResult> Dashboard()
     {
-        //verify session
-        var sessionId = HttpContext.Request.Cookies[Login.SESSIONID];
-        _sessionService.GetSessionKey(sessionId);
+        
         return View();
     }
 
